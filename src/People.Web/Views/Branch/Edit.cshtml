@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Html
+@model BranchEditViewModel
+
+@section Styles{
+    <style>
+        .select2-container .select2-selection--single {
+            height: fit-content !important;
+        }
+        .user-avatar{
+            width:32px;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<form asp-action="Edit" asp-controller="Branch" method="post">
+    <div>
+        <label>@Model.Branch.Name</label>
+    </div>
+
+    <label for="userSelector">Director</label>
+
+    <select asp-for="Branch.DirectorId" id="userSelector" class="w-50">
+        <option value="">No director set</option>
+        @foreach (var user in Model.Users)
+        {
+            <option value="@user.Id" data-avatar="@user.Avatar"><span><img src="@user.Avatar"/></span>@user.FullName</option>
+        }
+    </select>
+    <div>
+        <button>Save</button>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        function formatUsers(user){
+            if (!user.id){
+                return user.text;
+            }
+            const $user = $(
+            '<span><img class="img-fluid user-avatar"/><span></span></span>'
+            )
+            $user.find('span').text(user.text);
+            $user.find('img').attr('src', user.element.dataset.avatar);
+            return $user;
+        };
+
+        $(function(){
+            $('#userSelector').select2({
+                templateResult: formatUsers,
+                templateSelection: formatUsers,
+            });
+        })
+    </script>
+
+    
+}

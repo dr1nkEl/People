@@ -1,0 +1,35 @@
+﻿@model UserListViewModel
+
+<div>
+    <label>Branch</label>
+    <select id="branchSelector" onchange="setUsersTable('userTableBody', 'branchSelector', 'img-fluid')">
+        <option>Any</option>
+        @foreach (var branch in Model.Branches)
+        {
+            <option value="@branch.Id">@branch.Name</option>
+        }
+    </select>
+</div>
+
+<table class="table">
+    <tr>
+        <th>Avatar</th>
+        <th>Full name</th>
+        <th>Position</th>
+    </tr>
+    
+    <tbody id="userTableBody">
+
+    </tbody>
+</table>
+
+@section Scripts{
+    <script src="~/js/userList.js"></script>
+    <script>
+        $(function(){
+            setUsersTable('userTableBody', 'branchSelector');
+        })
+    </script>
+}
+
+

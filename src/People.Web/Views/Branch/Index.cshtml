@@ -1,0 +1,9 @@
+﻿@model BranchesViewModel
+
+@foreach(var branch in Model.Branches)
+{
+    <div>
+        <a asp-action="Edit" asp-controller="Branch" asp-route-branchId="@branch.Id">@branch.Name</a>
+    </div>
+}
+

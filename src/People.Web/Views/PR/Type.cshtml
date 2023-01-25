@@ -1,0 +1,59 @@
+﻿@model NewReviewTypeViewModel
+
+<form asp-action="Type" asp-controller="PR">
+    <label for="typeName">Name</label>
+    <input id="typeName" asp-for="Name" class="form-control" required/>
+
+    <label>Interval</label>
+    <select id="typeSelector" asp-for="Interval" class="row mx-auto w-25">
+        <option value="">None</option>
+    </select>
+
+    <div class="mx-auto w-50">
+        <label for="typeIntervalCheckbox">Use custom interval</label>
+        <input id="typeIntervalCheckbox" type="checkbox"/>
+    </div>
+    
+    <div id="intervalBlock">
+        <label for="typeIntervalAmount">Interval amount</label>
+        <input class="form-control" id="typeIntervalAmount" asp-for="IntervalAmount" placeholder="Interval"/>
+    </div>
+    
+    <button class="btn btn-success">Create</button>
+</form>
+
+@section Scripts{
+    <script src="~/js/Template/type.js"></script>
+    <script>
+        /**
+         * Setting up handlers.
+         */
+        $(async function(){
+            await getIntervalTypes();
+            fillSelector('typeSelector');
+            $('#typeIntervalCheckbox').on('change', function(){
+                if ($(this).is(':checked')){
+                    $('#intervalBlock').removeAttr('hidden');
+                }
+                else{
+                    $('#intervalBlock').attr('hidden', 'hidden');
+                    $('#typeIntervalAmount').val('');
+                }
+            });
+
+            $('#typeSelector').on('change', function(){
+                const val = $(this).val();
+                if (val == ''){
+                    $('#typeIntervalAmount').attr('disabled', 'disabled');
+                    $('#typeIntervalAmount').val('');
+                    $('#typeIntervalCheckbox').attr('disabled', 'disabled');
+                }else{
+                    $('#typeIntervalAmount').removeAttr('disabled',);
+                    $('#typeIntervalCheckbox').removeAttr('disabled');
+                }
+            })
+            $('#typeSelector').trigger('change');
+            $('#typeIntervalCheckbox').trigger('change');
+        })
+    </script>
+}

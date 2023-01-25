@@ -1,0 +1,45 @@
+﻿@model RoleListViewModel
+@{
+    ViewData["Title"] = "Administration Page";
+}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-6">
+            <form asp-antiforgery="true">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            @foreach (var claim in Model.Roles.FirstOrDefault()?.Permissions)
+                            {
+                                <th scope="col">@claim.Name</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <a href="#" class="nav-link">@role.Name</a>
+                            </th>
+                            @foreach (var claim in role.Permissions)
+                            {
+                                <td>
+                                    <input name="claimsEnabled" data-role-id="@role.Id" data-claim="@claim.Name" class="form-check-input" type="checkbox" checked="@claim.IsEnable"/>
+                                </td>
+                            }
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/Admin/Administation.js" asp-append-version="true"></script>
+}

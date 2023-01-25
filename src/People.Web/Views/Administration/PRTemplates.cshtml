@@ -1,0 +1,16 @@
+﻿@model ListViewModel
+
+<div class="justify-content-md-center bg-light" style="text-align:center;">
+    <div style="margin:auto;">
+        <label class="h3">Perfomance review templates</label>
+        <a class="link-primary" asp-action="New" asp-controller="PR">Create new</a>
+        <a class="link-primary" asp-action="Type" asp-controller="PR">Create new review type</a>
+    </div>
+
+    <ul>
+        @foreach (var template in Model.Templates)
+        {
+            <a asp-action="Edit" asp-controller="PR" asp-route-templateId="@template.Id" class="nav-link">@template.Name</a>
+        }
+    </ul>
+</div>

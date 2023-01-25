@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <CodeAnalysisRuleSet>..\..\tools\custom.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>default</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.13" />
+    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.406">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\People.DomainServices\People.DomainServices.csproj" />
+    <ProjectReference Include="..\People.Infrastructure.Abstractions\People.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\People.UseCases.Common\People.UseCases.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="**\*.html" />
+  </ItemGroup>
+
+</Project>

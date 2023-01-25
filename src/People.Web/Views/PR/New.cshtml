@@ -1,0 +1,81 @@
+﻿@model TemplateOptionsViewModel
+
+<div>
+    <label>Template</label>
+    <select class="form-select" id="templateSelector">
+        <option value="">None</option>
+        @foreach (var template in Model.Templates)
+        {
+            <option value="@template.Id">@template.Name</option>
+        }
+    </select>
+</div>
+
+<div id="createTemplateForm">
+    <div class="p-2">
+        <label for="templateName" class="h4">Name</label>
+        <input id="templateName" class="form-control" required/>
+    </div>
+
+    <div class="p-2">
+        <label for="reviewTypeSelector">Type</label>
+        <select class="form-select" id="reviewTypeSelector" required>
+            <option value="">Select type</option>
+            @foreach (var type in Model.ReviewTypes)
+            {
+                <option value="@type.Id">@type.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="p-2">
+        <label for="positionSelector" class="h4">Related position</label>
+        <select id="positionSelector" class="form-select">
+            <option value="">None</option>
+            @foreach (var position in Model.Positions)
+            {
+                <option value="@position.Id">@position.Name</option>
+            }
+        </select>
+    </div>
+
+    <div id="reviewedQuestionBlock" class="mx-auto h4 p-2">
+        <label>Reviewed user questions</label>
+        <button class="btn btn-success" type="button" onclick="addQuestionInput('reviewedQuestionBlock', 'reviewedQuestion', null)">Add question</button>
+    </div>
+
+    <div id="feedbackQuestionBlock" class="mx-auto h4 p-2">
+        <label>Feedback questions</label>
+        <button class="btn btn-success" type="button" onclick="addQuestionInput('feedbackQuestionBlock', 'feedbackQuestion', null)">Add question</button>
+    </div>
+
+    <button id="createButton" type="button" class="btn btn-success p-2">Create</button>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/Template/templateHelper.js"></script>
+    <script>
+        /**
+         * Setting up handlers.
+         */
+        $(async function(){
+            await getQuestionAnswerTypes();
+
+            $('#createButton').on('click', async function(e){
+                const requestData = getTemplateRequestData(null);
+
+                await createNew(requestData);
+
+                window.location.href= '@Url.Action("PRTemplates", "Administration")'
+            });
+
+            $('#templateSelector').on('change', async function(e){
+                const id = $(this).val();
+                const template = await getTemplate(id);
+
+                fillFields(template);
+            })
+        });   
+    </script>
+}

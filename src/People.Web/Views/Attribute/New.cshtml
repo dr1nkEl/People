@@ -1,0 +1,63 @@
+﻿@model NewAttributeViewModel
+
+<form asp-action="New" asp-controller="Attribute" method="post" style="text-align:center">
+    <div>
+        <label for="attributeName">Name</label>
+        <input asp-for="Name" id="attributeName" required/>
+    </div>
+    
+    <label for="allowEditSelector">Edit roles</label>
+    <div>
+        <select id="allowEditSelector" multiple
+            asp-for="EditRolesIds">
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
+    </div>
+    
+        
+    <label for="allowViewSelector">View roles</label>
+
+    <div>
+        <select id="allowViewSelector" multiple
+            asp-for="ViewRolesIds">
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
+    </div>
+    
+        
+    <label for="typeSelector">Type</label>
+    <select id="typeSelector"
+        asp-for="AttributeType"
+        asp-items="Html.GetEnumSelectList<AttributeType>()"
+        onchange="showOptions(2, 'attributeOptions', 'typeSelector')">
+    </select>
+
+    <div>
+        <label for="editSelfCheckbox">Allow edit self</label>
+        <input id="editSelfCheckbox" type="checkbox" asp-for=AllowEditSelf />
+    </div>
+    
+    <div>
+        <label for="viewSelfCheckbox">Allow view self</label>
+        <input id="viewSelfCheckbox" type="checkbox" asp-for="AllowViewSelf" />
+    </div>
+    
+    
+    <div id="attributeOptions" hidden="hidden">
+        <button class="btn btn-primary" type="button" onclick="addAttributeOptionInput('attributeOptions','AttributeTitles','')">Add option</button>
+    </div>
+    
+    <div>
+        <button class="btn btn-primary">Create</button>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/Attribute/attributeHelper.js"></script>
+}

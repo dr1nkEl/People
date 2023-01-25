@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Positions";
+}
+
+<div class="row">
+    <h3 class="col-md-10">Job positions</h3>
+    <button type="button" onclick="jQueryModalGet('@Url.Action("Add","Position")','Add Position')" class="col-md-2 btn bg-success btn-lg text-white">
+       Add a new Position
+    </button>
+</div>
+<div id="list"></div>
+
+<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="form-modal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close btn bg-danger btn-xs text-white" data-dismiss="modal" onclick="closeWindow()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/positionList.js" asp-append-version="true"></script>
+    <script>
+        // Initial position list load.
+        $(document).ready(function () {
+            $('#list').load('@Url.Action("List","Position")');
+        });
+    </script>
+}

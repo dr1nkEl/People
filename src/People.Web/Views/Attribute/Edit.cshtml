@@ -1,0 +1,75 @@
+﻿@model EditAttributeViewModel
+
+<form method="post" asp-action="Edit" asp-controller="Attribute" style="text-align:center">
+    <div>
+        <label for="attributeName">Name</label>
+        <input id="attributeName" asp-for="Attribute.Name" required/>
+    </div>
+
+    <label for="allowEditSelector">Edit roles</label>
+    <div>
+        <select id="allowEditSelector" multiple
+            asp-for="AllowEditRoles"
+            asp-items="@(new MultiSelectList(Model.Roles, nameof(Model.Attribute.Id),nameof(Model.Attribute.Name), Model.Attribute.AllowEditRoles.Select(attr=>attr.Id)))">
+        </select>
+    </div>
+    
+    <label for="allowViewSelector">View roles</label>
+    <div>
+        <select id="allowViewSelector" multiple
+            asp-for="AllowViewRoles"
+            asp-items="@(new MultiSelectList(Model.Roles, nameof(Model.Attribute.Id),nameof(Model.Attribute.Name), Model.Attribute.AllowViewRoles.Select(attr=>attr.Id)))">
+        </select>
+    </div>
+
+    <label for="typeSelector">Type</label>
+    <select id="typeSelector"
+        asp-for="Attribute.AttributeType"
+        asp-items="Html.GetEnumSelectList<AttributeType>()"
+        onchange="showOptions(2, 'attributeOptions', 'typeSelector')">
+    </select>
+
+    <div>
+        <label for="Attribute.AllowEditSelf">Allow edit self</label>
+        @(Html.CheckBoxFor(attr => attr.Attribute.AllowEditSelf))
+    </div>
+
+    <div>
+        <label for="Attribute.AllowViewSelf">Allow view self</label>
+        @(Html.CheckBoxFor(attr => attr.Attribute.AllowViewSelf))
+    </div>
+
+    <div id="attributeOptions" @(Model.Attribute.AttributeType == AttributeType.DropDown?"":"hidden='hidden'")>
+        <button class="btn btn-primary" type="button" onclick="addAttributeOptionInput('attributeOptions','AttributeTitles','')">Add option</button>
+    </div>
+
+    <div>
+        <button class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Are you sure about deleting: @Model.Attribute.Name ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form class="modal-body" action="/admin/Attribute/Delete/@Model.Attribute.Id" method="post">
+            <button class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Attribute/attributeHelper.js"></script>
+    <script>
+        $(function(){
+            setDefaultAttributeOptions('@Model.Attribute.Id', 'attributeOptions', 'AttributeTitles');
+        })
+    </script>
+}

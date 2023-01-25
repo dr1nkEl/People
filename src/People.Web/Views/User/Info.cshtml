@@ -1,0 +1,157 @@
+﻿@using People.UseCases.Common.Identity
+@using People.Infrastructure.Abstractions.Interfaces
+@inject ILoggedUserAccessor loggedUserAccessor;
+@model UserInfoViewModel
+@{
+    ViewData["Title"] = $"User {Model.User.FullName}";
+    var stringBirthday = Model.User.BirthDay == DateOnly.MinValue ? "N/A" : Model.User.BirthDay.ToString();
+}
+
+@section Styles{
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<div class="d-grid gap-3">
+  <div class="p-2 bg-light border row">
+      <div class="col-md-6">
+          <div class="p-1 row">
+             <img class="col-md-4" src=@Model.User.AvatarUrl/>
+             <h3 class="col-md-6">@Model.User.FullName</h3>
+          </div>
+
+          <div class="p-1 row">
+            <h6 class="col-md-4">Email:</h6>
+            <span class="col-md-6">@Model.User.Email</span>
+          </div>
+
+          <div class="p-1 row">
+            <h6 class="col-md-4">Birthday:</h6>
+            <span class="col-md-6">@stringBirthday</span>
+          </div>
+
+          <div class="p-1 row">
+            <h6 class="col-md-4">Branch:</h6>
+            <a class="col-md-6" href="@Url.Action("Edit", "Branch", new { id = Model.Branch.Id})">@Model.Branch.Name</a>
+          </div>
+
+          <div class="p-1 row">
+            <span class="col-md-2">Role:</span>
+            @if (loggedUserAccessor.HasClaim(CustomClaimTypes.Permission, Permissions.Management))
+            {
+              <form class="col-md-4" asp-action="ChangeUserRole" asp-controller="User" asp-anti-forgery="true" method="post" class="w-50 mx-auto">
+                  <select name="RoleIdToSet">
+                      @foreach (var role in Model.AllRoles)
+                      {
+                          @if (role.Name == Model.User.Roles.FirstOrDefault())
+                          {
+                              <option value="@role.Id" selected>@role.Name</option>
+                          }
+                          else
+                          {
+                              <option value="@role.Id">@role.Name</option>
+                          }
+                      }
+                  </select>
+                  <input name="UserId" value="@Model.User.Id" hidden="hidden">
+                  <input type="submit" class="btn btn-secondary text-white btn-sm" value="Update role">
+              </form>
+            }
+            else
+            {
+                <span class="col-md-4">@string.Join(',', Model.User.Roles)</span>
+            }
+          </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-3">
+            <h6>Positions:</h6>
+            @if (Model.Positions is not null)
+            {
+                <button type="button" class="btn btn-secondary text-white col-md-6" onclick="showOrHideSection('editForm')">Edit</button>
+            }
+          </div>
+          <ul class="col-md-6">
+            @foreach (var position in Model.User.Positions)
+            {
+               <li>@position.Name</li>
+            }
+          </ul>
+        </div>
+
+        @if (Model.Positions is not null)
+        {
+           <form method="post" id="editForm" asp-action="EditPositions" asp-controller="User" asp-route-userId="@Model.User.Id" hidden>
+             <label for="positionsSelector">Edit positions:</label>
+             <div class="p-2 row">
+               <select id="positionsSelector" name="positionIds" class="form-control col-md-6" style="width: 50%" multiple>
+                 @foreach (var position in Model.Positions)
+                 {
+                     @if (Model.User.Positions.Any(pos => pos.Id == @position.Id))
+                     {
+                         <option value="@position.Id" selected="selected">@position.Name</option>
+                     }
+                     else
+                     {
+                         <option value="@position.Id">@position.Name</option>
+                     }
+                 }
+               </select>
+               <div class="col-md-3">
+                   <input type="submit" class="btn btn-info text-white" value="Save changes"/>
+               </div>
+             </div>
+           </form>
+        }
+      </div>
+  </div>
+
+  <div class="row p-4 bg-light border">
+     <div class="col-md-2">
+         <h6>Reporting users:</h6>
+         @if (Model.Users is not null)
+         {
+             <button type="button" class="btn btn-secondary text-white col-md-6" onclick="showOrHideSection('editReportingUsers')">Edit</button>
+         }
+     </div>
+     <ul class="col-md-4">
+       @foreach (var user in Model.User.ReportingUsers)
+       {
+           <li class="row">
+               <img class="col-md-3" src="@user.AvatarUrl"/>
+               <span class="col-md-6"><a href="@Url.Action("Info", "User", new { userId = @user.Id } )">@user.FullName</a></span>
+           </li>
+       }
+     </ul>
+     @if (Model.Users is not null)
+     {
+       <form id="editReportingUsers" class="col-md-6" asp-action="EditReportingUsers" asp-controller="User" asp-route-userId="@Model.User.Id"  method="post" hidden>
+         <label for="reportingUsersSelector">Edit Reporting Users:</label>
+         <div class ="row">
+           <select name="reportingUserIds" id="reportingUsersSelector" class="col-md-8" style="width: 75%" multiple>
+             @foreach (var user in Model.Users)
+             {
+                 @if (Model.User.ReportingUsers.Any(child => child.Id == user.Id))
+                 {
+                     <option value="@user.Id" data-avatar="@user.AvatarUrl" selected="selected"><span><img src="@user.AvatarUrl"/></span>@user.FullName</option>
+                 }
+                 else
+                 {
+                     <option value="@user.Id" data-avatar="@user.AvatarUrl"><span><img src="@user.AvatarUrl"/></span>@user.FullName</option>
+                 }
+             }
+           </select>
+           <div class="col-md-3">
+                   <input type="submit" class="btn btn-info text-white" value="Save changes"/>
+           </div>
+         </div>
+       </form>
+     }
+  </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/js/User/userInfoEdit.js"></script>
+}

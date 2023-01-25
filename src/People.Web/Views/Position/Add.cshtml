@@ -1,0 +1,34 @@
+﻿@model CreatePositionViewModel
+@{
+    Layout = null;
+}
+<form asp-action="Add" asp-controller="Position" method="post" onsubmit="return jQueryModalPost(this, '@Url.Action("List","Position")')">
+    <div class="form">
+        <div class="attr">
+           <label for="name">Position name</label>
+           @Html.TextBox("name", null, new {@class = "form-control"})
+        </div>
+       <div class="attr">
+          <label for="childPositions">Child positions</label>
+          <select name="childIds" class="form-control" multiple>
+              @foreach (var position in Model.Positions)
+              {
+                  <option value="@position.Id">@position.Name</option>
+              }
+            </select>   
+       </div>
+       <div class="attr">
+          <label for="childPositions">Parent positions</label>
+          <select name="parentId" class="form-control">
+              <option disabled selected/>
+              @foreach (var position in Model.Positions)
+              {
+                  <option value="@position.Id">@position.Name</option>
+              }
+          </select>
+       </div>
+    </div>
+    <div>
+        <button type="submit" class="btn bg-success text-white" onclick="closeWindow()"> Add position </button>
+    </div>
+</form>

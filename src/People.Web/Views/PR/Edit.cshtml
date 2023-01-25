@@ -1,0 +1,87 @@
+﻿@model EditTemplateViewModel
+
+@{
+    var id = Context.Request.RouteValues["templateId"];
+}
+
+<div id="patchTemplateForm">
+    <div class="p-2">
+        <label for="templateName" class="h4">Name</label>
+        <input id="templateName" class="form-control" required/>
+    </div>
+
+    <div class="p-2">
+        <label for="reviewTypeSelector">Type</label>
+        <select class="form-select" id="reviewTypeSelector" required>
+            <option value="">Select type</option>
+            @foreach (var type in Model.Options.ReviewTypes)
+            {
+                <option value="@type.Id">@type.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="p-2">
+        <label for="positionSelector" class="h4">Related position</label>
+        <select id="positionSelector" class="form-select">
+            <option value="">None</option>
+            @foreach (var position in Model.Options.Positions)
+            {
+                <option value="@position.Id">@position.Name</option>
+            }
+        </select>
+    </div>
+
+    <div id="reviewedQuestionBlock" class="mx-auto h4 p-2">
+        <label>Reviewed user questions</label>
+        <button class="btn btn-success" type="button" onclick="addQuestionInput('reviewedQuestionBlock', 'reviewedQuestion', null)">Add question</button>
+    </div>
+
+    <div id="feedbackQuestionBlock" class="mx-auto h4 p-2">
+        <label>Feedback questions</label>
+        <button class="btn btn-success" type="button" onclick="addQuestionInput('feedbackQuestionBlock', 'feedbackQuestion', null)">Add question</button>
+    </div>
+
+    <button id="saveButton" type="button" class="btn btn-success p-2">Save</button>
+</div>
+
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Are you sure about deleting?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form class="modal-body" asp-action="Delete" asp-controller="PR" asp-route-templateId="@id" method="post">
+            <button class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Template/templateHelper.js"></script>
+    <script>
+        /**
+         * Setting up fields for editable template and handlers.
+         */
+        $(async function(){
+            await getQuestionAnswerTypes();
+
+            const serializedTemplate = @(Json.Serialize(Model.Template))
+
+            fillFields(serializedTemplate);
+
+            $('#saveButton').on('click', async function(e){
+                const requestData = getTemplateRequestData(@id);
+
+                await patchTemplate(requestData);
+
+                window.location.href= '@Url.Action("PRTemplates", "Administration")'
+            });
+        });   
+    </script>
+}

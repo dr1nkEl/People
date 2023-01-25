@@ -1,0 +1,49 @@
+﻿@model ListPositionViewModel
+@{
+    Layout = null;
+}
+
+<div class="text-center">
+    @if (Model.Positions.Any())
+    {
+        <table class="table table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Child positions</th>
+                <th>Parent positions</th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var position in Model.Positions)
+            {
+                <tr>
+                    <td>@position.Name</td>
+                    <td>@string.Join(", ",position.ChildPositions.Select(pos => pos.Name))</td>
+                    <td>
+                        @if (@position.ParentPosition != null)
+                        {
+                            @position.ParentPosition.Name
+                        }
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-info text-white" onclick="return jQueryModalGet('@Url.Action("Edit","Position",
+                            new { positionId = @position.Id })', 'Edit Position')">
+                            Edit
+                        </button>
+                    </td>
+                    <td>               
+                        <button type="button" class="btn btn-danger text-white" onclick="return jQueryModalGet('@Url.Action("Delete","Position",
+                            new { positionId = @position.Id })', 'Delete Position')">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    } 
+    else
+    {
+         <h4> There are no positions yet </h4>
+    }
+</div>

@@ -1,0 +1,20 @@
+﻿@model AttributeListViewModel
+
+<div class="justify-content-md-center" style="text-align:center;">
+    <div style="margin:auto;">
+        <div>
+            <label class="h3">Attributes</label>
+            <a class="link-primary" asp-action="New" asp-controller="Attribute">Create new</a>
+        </div>
+            
+    </div>
+
+    <div>
+        @foreach (var userAttribute in Model.Attributes)
+        {
+            <div>
+                <a asp-action="Edit" asp-controller="Attribute" asp-route-attributeId="@userAttribute.Id">@userAttribute.Name</a>
+            </div>
+        }
+    </div>
+</div>
