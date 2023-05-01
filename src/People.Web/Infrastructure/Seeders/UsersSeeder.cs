@@ -84,7 +84,7 @@ public class UsersSeeder
             EmailConfirmed = true,
             PhoneNumber = faker.Phone.PhoneNumber("###-###-#####"),
             PhoneNumberConfirmed = true,
-            BranchId = r.Next(1, 10)
+            BranchId = r.Next(1, 5)
         };
     }
 }

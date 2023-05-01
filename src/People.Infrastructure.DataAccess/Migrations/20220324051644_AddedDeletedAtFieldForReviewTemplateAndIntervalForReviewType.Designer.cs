@@ -422,10 +422,6 @@ namespace People.Infrastructure.DataAccess.Migrations
                         .IsUnicode(false)
                         .HasColumnType("text");
 
-                    b.Property<string>("CrmRoleId")
-                        .IsUnicode(false)
-                        .HasColumnType("text");
-
                     b.Property<int?>("InheritedRoleId")
                         .HasColumnType("integer");
 
@@ -506,9 +502,6 @@ namespace People.Infrastructure.DataAccess.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CrmId")
-                        .HasColumnType("integer");
 
                     b.Property<int?>("DirectorId")
                         .HasColumnType("integer");
@@ -658,9 +651,6 @@ namespace People.Infrastructure.DataAccess.Migrations
                         .IsConcurrencyToken()
                         .IsUnicode(false)
                         .HasColumnType("text");
-
-                    b.Property<int?>("CrmId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");

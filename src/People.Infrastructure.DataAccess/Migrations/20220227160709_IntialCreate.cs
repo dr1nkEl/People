@@ -17,7 +17,6 @@ namespace People.Infrastructure.DataAccess.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     InheritedRoleId = table.Column<int>(type: "integer", nullable: true),
-                    CrmRoleId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "character varying(256)", unicode: false, maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "character varying(256)", unicode: false, maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", unicode: false, nullable: true)
@@ -309,7 +308,6 @@ namespace People.Infrastructure.DataAccess.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", unicode: false, nullable: true),
-                    CrmId = table.Column<int>(type: "integer", nullable: false),
                     DirectorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>

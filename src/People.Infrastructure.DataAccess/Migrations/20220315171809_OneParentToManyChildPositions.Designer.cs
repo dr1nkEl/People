@@ -416,9 +416,6 @@ namespace People.Infrastructure.DataAccess.Migrations
                         .IsUnicode(false)
                         .HasColumnType("text");
 
-                    b.Property<int?>("CrmRoleId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("InheritedRoleId")
                         .HasColumnType("integer");
 
@@ -499,9 +496,6 @@ namespace People.Infrastructure.DataAccess.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CrmId")
-                        .HasColumnType("integer");
 
                     b.Property<int?>("DirectorId")
                         .HasColumnType("integer");
