@@ -2,7 +2,6 @@
   "profiles": {
     "Import": {
       "commandName": "Project",
-      "commandLineArgs": "seed --name Users -count 300",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

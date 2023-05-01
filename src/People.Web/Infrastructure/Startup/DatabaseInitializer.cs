@@ -14,6 +14,15 @@ namespace People.Web.Infrastructure.Startup;
 internal sealed class DatabaseInitializer : IAsyncInitializer
 {
     private const string AdminRole = "ALL";
+    private readonly IReadOnlyCollection<Branch> branches = new List<Branch>()
+    {
+        new() { Name = "Ekaterinburg" },
+        new() { Name = "Chelyabinsk" },
+        new() { Name = "Moscow" },
+        new() { Name = "Paris" },
+        new() { Name = "Brazilia" },
+    };
+
     private readonly AppDbContext appDbContext;
     private readonly RoleManager<AppIdentityRole> roleManager;
 
@@ -34,6 +43,18 @@ internal sealed class DatabaseInitializer : IAsyncInitializer
     {
         await appDbContext.Database.MigrateAsync();
         await AddDefaultRolesAsync();
+        await AddDefaultBranchesAsync();
+    }
+
+    private async Task AddDefaultBranchesAsync()
+    {
+        var count = await appDbContext.Branches.CountAsync();
+
+        if (count == 0)
+        {
+            await appDbContext.Branches.AddRangeAsync(branches);
+            await appDbContext.SaveChangesAsync();
+        }
     }
 
     private async Task AddDefaultRolesAsync()
