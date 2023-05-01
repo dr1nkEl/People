@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using People.Domain.Users.Entities;
-using People.Infrastructure.Common.Crm.Dto;
 using People.Infrastructure.Common.Settings;
 using Saritasa.Tools.Domain.Exceptions;
 

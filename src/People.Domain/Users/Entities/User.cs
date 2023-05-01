@@ -9,11 +9,6 @@ namespace People.Domain.Users.Entities;
 public class User : IdentityUser<int>
 {
     /// <summary>
-    /// Id of user in CRM.
-    /// </summary>
-    public int? CrmId { get; set; }
-
-    /// <summary>
     /// First name.
     /// </summary>
     [MaxLength(255)]

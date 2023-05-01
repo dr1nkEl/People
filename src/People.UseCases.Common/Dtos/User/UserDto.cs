@@ -8,9 +8,6 @@ public record UserDto
     /// </summary>
     public int Id { get; init; }
 
-    /// <inheritdoc cref="Domain.Users.Entities.User.CrmId"/>
-    public int CrmId { get; init; }
-
     /// <inheritdoc cref="Domain.Users.Entities.User.FirstName"/>
     public string FirstName { get; init; }
 

@@ -1,6 +1,5 @@
 ﻿using Extensions.Hosting.AsyncInitialization;
 using Hangfire;
-using People.Web.BackgroundJobs;
 
 namespace People.Web.Infrastructure.Startup;
 
@@ -19,7 +18,5 @@ internal class HangfireJobnitializer : IAsyncInitializer
 
     private static void AddDefaultRecurringJobs()
     {
-        RecurringJob.AddOrUpdate<SyncCrmDataJob>("SyncCrmDataJob", x => x.SyncData(default), Cron.Daily);
-        RecurringJob.Trigger("SyncCrmDataJob");
     }
 }

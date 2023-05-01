@@ -12,9 +12,6 @@ public record BranchViewModel
     /// <inheritdoc cref="Branch.Name"/>
     public string Name { get; init; }
 
-    /// <inheritdoc cref="Branch.CrmId"/>
-    public int CrmId { get; init; }
-
     /// <inheritdoc cref="Branch.DirectorId"/>
     public int? DirectorId { get; init; }
 

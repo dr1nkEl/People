@@ -110,9 +110,6 @@ public class Startup
         // Logging.
         services.AddLogging(new LoggingOptionsSetup(configuration, environment).Setup);
 
-        // Application settings.
-        services.Configure<ApplicationSettings>(configuration.GetSection("Application"));
-
         // HTTP client.
         services.AddHttpClient();
 
@@ -127,9 +124,6 @@ public class Startup
         });
 
         services.AddHangfireServer();
-
-        // Application settings.
-        services.Configure<ApplicationSettings>(configuration.GetSection("Application"));
 
         // SAML settings.
         services.AddScoped<SamlSettings>(option => GetSamlSettings());

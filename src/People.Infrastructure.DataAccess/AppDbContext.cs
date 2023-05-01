@@ -95,8 +95,8 @@ public class AppDbContext : IdentityDbContext<User, AppIdentityRole, int>, IAppD
             .UsingEntity(j => j.ToTable("ViewableRoleAttributes"));
 
         modelBuilder.Entity<UserAttribute>()
-            .HasMany(opt=>opt.AttributeOptions)
-            .WithOne(attr=>attr.Attribute)
+            .HasMany(opt => opt.AttributeOptions)
+            .WithOne(attr => attr.Attribute)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<UserAttribute>()

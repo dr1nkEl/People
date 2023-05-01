@@ -20,12 +20,6 @@ public class AppIdentityRole : IdentityRole<int>
     public AppIdentityRole InheritedRole { get; set; }
 
     /// <summary>
-    /// Id of the CRM role.
-    /// When syncing data from CRM, users will automatically be granted the current role if they have the scpecified role in CRM.
-    /// </summary>
-    public string CrmRoleId { get; set; }
-
-    /// <summary>
     /// Attributes that can be viewed by the current role.
     /// </summary>
     public ICollection<UserAttribute> ViewableAttributes { get; set; } = new List<UserAttribute>();

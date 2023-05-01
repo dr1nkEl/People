@@ -11,9 +11,6 @@ public class BranchDto
     /// <inheritdoc cref="Domain.Users.Entities.Branch.Name"/>
     public string Name { get; init; }
 
-    /// <inheritdoc cref="Domain.Users.Entities.Branch.CrmId"/>
-    public int CrmId { get; init; }
-
     /// <inheritdoc cref="Domain.Users.Entities.Branch.DirectorId"/>
     public int? DirectorId { get; init; }
 

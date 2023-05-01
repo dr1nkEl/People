@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using People.Domain.Users.Entities;
-using People.Infrastructure.Common.Crm.Dto;
 using People.UseCases.Common.Dtos.Branch;
 
 namespace People.UseCases.Branches;
@@ -15,7 +14,6 @@ internal class BranchMappingProfile : Profile
     /// </summary>
     public BranchMappingProfile()
     {
-        CreateMap<BranchCrmDto, Branch>();
         CreateMap<Branch, BranchDto>().ReverseMap();
         CreateMap<Branch, BranchNameDto>();
     }

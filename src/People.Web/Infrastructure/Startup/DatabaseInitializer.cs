@@ -13,7 +13,7 @@ namespace People.Web.Infrastructure.Startup;
 /// </summary>
 internal sealed class DatabaseInitializer : IAsyncInitializer
 {
-    private const string AdminRoleCrmId = "ALL";
+    private const string AdminRole = "ALL";
     private readonly AppDbContext appDbContext;
     private readonly RoleManager<AppIdentityRole> roleManager;
 
@@ -50,7 +50,6 @@ internal sealed class DatabaseInitializer : IAsyncInitializer
         if (await roleManager.FindByNameAsync(adminRoleName) == null)
         {
             var adminRole = new AppIdentityRole();
-            adminRole.CrmRoleId = AdminRoleCrmId;
             adminRole.InheritedRole = await roleManager.Roles.Where(role => role.Name == userRoleName).FirstOrDefaultAsync();
             await roleManager.SetRoleNameAsync(adminRole, adminRoleName);
             await roleManager.UpdateNormalizedRoleNameAsync(adminRole);

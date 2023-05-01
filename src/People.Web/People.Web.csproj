@@ -13,14 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="saml.template">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="6.0.1" />
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
@@ -55,6 +47,10 @@
     <ProjectReference Include="..\People.Infrastructure.DataAccess\People.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\People.Infrastructure\People.Infrastructure.csproj" />
     <ProjectReference Include="..\People.UseCases\People.UseCases.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="BackgroundJobs\" />
   </ItemGroup>
 
 </Project>

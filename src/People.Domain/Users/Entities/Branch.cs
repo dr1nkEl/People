@@ -16,11 +16,6 @@ public class Branch
     public string Name { get; set; }
 
     /// <summary>
-    /// Id of the branch in the CRM system.
-    /// </summary>
-    public int CrmId { get; set; }
-
-    /// <summary>
     /// Id of the user who is head of the branch.
     /// </summary>
     public int? DirectorId { get; set; }
