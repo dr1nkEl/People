@@ -1,14 +1,21 @@
-﻿using AutoMapper;
+﻿using System.Threading;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using People.Domain.Reviews.Entities;
+using People.Domain.Users.Entities;
 using People.UseCases.Common.Dtos.PR;
 using People.UseCases.Positions.Queries.GetPositions;
 using People.UseCases.PR.CreateTemplate;
 using People.UseCases.PR.CreateType;
 using People.UseCases.PR.DeleteTemplate;
+using People.UseCases.PR.GetSetReviews;
 using People.UseCases.PR.GetTemplate;
 using People.UseCases.PR.GetTemplates;
 using People.UseCases.PR.GetTypes;
+using People.UseCases.PR.SetReview;
+using People.UseCases.Users;
+using People.Web.ViewModels;
 using People.Web.ViewModels.Position;
 using People.Web.ViewModels.PR;
 
@@ -104,6 +111,53 @@ public class PRController : Controller
     {
         await mediator.Send(new DeleteTemplateCommand(templateId), cancellationToken);
         return RedirectToAction(nameof(AdministrationController.PRTemplates), nameof(AdministrationController).Replace("Controller", null));
+    }
+
+    /// <summary>
+    /// POST set review.
+    /// </summary>
+    /// <param name="model"><see cref="SetViewModel"/>.</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+    /// <returns></returns>
+    [HttpPost("[action]")]
+    public async Task<IActionResult> SetReview([FromForm]SetViewModel model, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        await mediator.Send(new SetReviewCommand(model.ReviewedUserId.Value, model.TemplateId.Value, model.Deadline, model.ReviewedByUsersIds), cancellationToken);
+
+        return RedirectToAction(nameof(AdministrationController.PRTemplates), nameof(AdministrationController).Replace("Controller", null));
+    }
+
+    /// <summary>
+    /// GET set review page.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("[action]")]
+    public async Task<IActionResult> SetReview(CancellationToken cancellationToken)
+    {
+        var usersDto = await mediator.Send(new GetAllUsersDetailedQuery(), cancellationToken);
+        var users = mapper.Map<IEnumerable<UserDetailedViewModel>>(usersDto);
+
+        var templatesDto = await mediator.Send(new GetPRTemplatesQuery(), cancellationToken);
+        var templates = mapper.Map<IEnumerable<TemplateViewModel>>(templatesDto);
+
+        return View(new SetViewModel() { ReviewTemplates = templates, Users = users });
+    }
+
+    /// <summary>
+    /// GET set reviews.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Reviews(CancellationToken cancellationToken)
+    {
+        return View(await mediator.Send(new GetSetReviewsQuery(), cancellationToken));
     }
 
     private async Task<TemplateOptionsViewModel> GetTemplateOptionsVMAsync(CancellationToken cancellationToken)

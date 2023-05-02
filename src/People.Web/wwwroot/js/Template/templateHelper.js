@@ -12,13 +12,11 @@ function getQuestions(questionClassName) {
     const result = [];
     for (const elem of questions) {
         const title = elem.getElementsByClassName('questionTitle')[0].value;
-        const order = elem.getElementsByClassName('questionOrder')[0].value;
 
         const type = elem.getElementsByClassName('questionType')[0].value;
 
         const question = {
             Title: title,
-            Order: order,
             Options: [],
             AnswerType: type
         };
@@ -33,8 +31,7 @@ function getQuestions(questionClassName) {
         for (let optionId = 0; optionId < options.length; optionId++) {
             const optionDom = options[optionId];
             const optionTitle = optionDom.getElementsByClassName('optionTitle')[0].value;;
-            const optionOrder = optionDom.getElementsByClassName('optionOrder')[0].value
-            question['Options'].push({ Title: optionTitle, Order: optionOrder });
+            question['Options'].push({ Title: optionTitle});
         }
         result.push(question);
     }
@@ -78,16 +75,15 @@ function addQuestionInput(parentId, className, data) {
 
     const optionBlockId = 'optionBlock'+counter;
 
-    $('#' + parentId).append('<div class="row mx-auto p-2 ' + className + '" id="' + id + '">' +
+    $('#' + parentId).append('<div style="margin: 1% auto;" class="row mx-auto p-2 border border-primary border-3 rounded d-grid gap-3 ' + className + '" id="' + id + '">' +
         '<label class="row mx-auto ">Question</label>' +
         '<input class="form-control col questionTitle questionTitle'+counter+'" placeholder = "Title" " required/>' +
-        '<input class="form-control col questionOrder questionOrder'+counter+'" type="number" placeholder="Order" required/>' +
-        '<a class="col btn btn-danger" id="delete' + id + '">X</a>' +
         '<div class="row mx-auto">'+
         '<label class="col" for="answerTypeSelector' + counter + '">Answer type</label>' +
-        '<select data-counter="'+counter+'" class="form-select col questionType questionType'+counter+'" id="answerTypeSelector' + counter + '"></select>' +
+        '<select data-counter="' + counter + '" class="form-select col questionType questionType' + counter + '" id="answerTypeSelector' + counter + '"></select>' +
         '</div>'+
-        '<div id="'+optionBlockId+'"><button onclick="addQuestionOption(\'optionBlock'+counter+'\', null);" class="btn btn-primary" type="button">Add Option</button></div></div>');
+        '<div id="' + optionBlockId + '"><button onclick="addQuestionOption(\'optionBlock' + counter + '\', null);" class="btn btn-primary" type="button">Add Option</button></div>' +
+        '<a class="col btn btn-danger" id="delete' + id + '">Remove this question</a></div>');
     $('#delete' + id).on('click', function () {
         $('#' + id).remove();
     });
@@ -112,7 +108,6 @@ function addQuestionInput(parentId, className, data) {
     if (data) {
         for (let i = 0; i < data.length; i++) {
             $('.questionTitle' + counter)[0].value = data[i].title;
-            $('.questionOrder' + counter)[0].value = data[i].order;
             $('.questionType' + counter)[0].value = data[i].answerType;
             for (let y = 0; y < data[i].options.length; y++){
                 addQuestionOption(optionBlockId, data[i].options[y]);
@@ -134,7 +129,6 @@ function addQuestionOption(parentId, data) {
     $('#' + parentId).append('<div id="' + id + '" class="questionOption row w-100 mx-auto" ">' +
         '<label class="row mx-auto">Option</label>'+
         '<input class="optionTitle form-control col" placeholder = "Title" required>'+
-        '<input type="number" class="optionOrder col form-control" placeholder="Order" required/>'+
         '<a class="col btn btn-secondary" id="delete' + id + '">X</a></div >');
     $('#delete' + id).on('click', function () {
         $('#' + id).remove();
@@ -142,7 +136,6 @@ function addQuestionOption(parentId, data) {
 
     if (data) {
         $('#' + id + ' .optionTitle')[0].value = data.title;
-        $('#' + id + ' .optionOrder')[0].value = data.order;
     }
     counter += 1;
 }

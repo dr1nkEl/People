@@ -1,0 +1,28 @@
+﻿@model IEnumerable<PerformanceReview>
+
+<table class="mx-auto table table-primary table-hover">
+    <tr>
+        <th>Reviewed user</th>
+        <th>Deadline</th>
+        <th>Created at</th>
+        <th>Created by</th>
+        <th>Reviewed by</th>
+    </tr>
+    @{
+        foreach(var review in Model)
+        {
+            <tr>
+                <td><a href="/User/Info?userId=@review.ReviewedUserId">@review.ReviewedUser.FullName</a></td>
+                <td>@(review.Deadline?.ToString("dd.MM.yyyy")??"No deadline set")</td>
+                <td>@review.CreatedAt</td>
+                <td><a href="/User/Info?userId=@review.CreatedById">@review.CreatedBy.FullName</a></td>
+                <td>
+                    @foreach(var user in review.FeedbackUsers)
+                    {
+                        <a href="/User/Info?userId=@user.Id">@user.FullName</a>
+                    }
+                </td>
+            </tr>
+        }
+    }
+</table>

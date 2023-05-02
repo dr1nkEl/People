@@ -13,9 +13,6 @@ public record QuestionViewModel
     /// <inheritdoc cref="Question.Title"/>
     public string Title { get; init; }
 
-    /// <inheritdoc cref="Question.Order"/>
-    public int Order { get; init; }
-
     /// <inheritdoc cref="Question.Options"/>
     public ICollection<QuestionOptionViewModel> Options { get; init; }
 }

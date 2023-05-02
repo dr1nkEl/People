@@ -5,7 +5,6 @@ using People.UseCases.Positions.Queries.GetPositionsWithInfo;
 using People.UseCases.Positions.Queries.GetPositions;
 using Saritasa.Tools.Domain.Exceptions;
 using AutoMapper;
-using People.UseCases.Common.Dtos.PR;
 using People.UseCases.Common.Dtos.Position;
 using People.Web.ViewModels.Position;
 

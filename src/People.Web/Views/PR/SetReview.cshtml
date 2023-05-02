@@ -1,0 +1,129 @@
+﻿@model SetViewModel
+@using Microsoft.AspNetCore.Html
+
+@section Styles{
+    <style>
+        .select2-container .select2-selection--single {
+            height: fit-content !important;
+        }
+        .user-avatar{
+            width:32px;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<label>Set review for user.</label>
+
+<form asp-action="SetReview" asp-controller="PR" method="post">
+    <div>
+        <div class="w-100" style="margin: 1% auto;">
+            <label for="userSelector">Reviewed user</label>
+            <select asp-for="ReviewedUserId" id="userSelector" class="w-50" required>
+                @foreach (var user in Model.Users)
+                {
+                    <option value="@user.Id" data-avatar="@user.Avatar"><span><img src="@user.Avatar"/></span>@user.FullName</option>
+                }
+            </select>
+        </div>
+
+        <div class="w-100" style="margin: 1% auto;">
+            <label for="templateSelector">Template</label>
+            <select asp-for="TemplateId" id="templateSelector" class="w-50" required>
+            </select>
+        </div>
+
+        <div class="w-100" style="margin: 1% auto;">
+            <label for="deadlineInput">Deadline</label>
+            <input type="date" id="deadlineInput"
+                   min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                   required
+                   asp-for="Deadline"/>
+        </div>
+
+        <div class="w-100" style="margin: 1% auto;">
+            <label for="userSelector">Reviewed by users</label>
+            <select asp-for="ReviewedByUsersIds" id="reviewersSelector" class="w-50" required multiple>
+                @foreach (var user in Model.Users)
+                {
+                    <option value="@user.Id" data-avatar="@user.Avatar"><span><img src="@user.Avatar" /></span>@user.FullName</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    
+    <div style="margin: 1% auto;">
+        <button class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        function formatUsers(user){
+            if (!user.id){
+                return user.text;
+            }
+            const $user = $(
+            '<span><img class="img-fluid user-avatar"/><span></span></span>'
+            )
+            $user.find('span').text(user.text);
+            $user.find('img').attr('src', user.element.dataset.avatar);
+            return $user;
+        };
+
+        async function getTemplatesForUserAsync(userId) {
+            return $.ajax({
+                method: 'GET',
+                url: `/api/PR/GetTemplatesForUser/${userId}`,
+                datatype: 'json',
+                async: true,
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+
+        $(async function(){
+            let templates = await getTemplatesForUserAsync($('#userSelector').val());
+
+            jQuery.each(templates, function (index) {
+                let template = templates[index];
+                $('#templateSelector').empty();
+                $('#templateSelector').append($('<option>',
+                    {
+                        value: template.id,
+                        text: template.name
+                    }));
+            });
+
+            $('#userSelector').select2({
+                templateResult: formatUsers,
+                templateSelection: formatUsers,
+            });
+
+            $('#userSelector').on("change", async function(){
+                let templates = await getTemplatesForUserAsync($('#userSelector').val());
+
+                jQuery.each(templates, function(index)
+                {
+                    let template = templates[index];
+                    $('#templateSelector').empty();
+                    $('#templateSelector').append($('<option>',
+                    {
+                        value: template.id,
+                        text: template.name
+                    }));
+                });
+            })
+
+            $('#reviewersSelector').select2({
+                templateResult: formatUsers,
+                templateSelection: formatUsers,
+            });
+        })
+    </script>
+
+    
+}

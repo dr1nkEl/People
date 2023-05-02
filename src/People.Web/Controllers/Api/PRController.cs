@@ -5,6 +5,7 @@ using People.Domain.Reviews.Entities;
 using People.UseCases.Common.Dtos.PR;
 using People.UseCases.PR.CreateTemplate;
 using People.UseCases.PR.GetTemplate;
+using People.UseCases.PR.GetTemplatesForUser;
 using People.UseCases.PR.PatchTemplate;
 using People.Web.Services;
 using People.Web.ViewModels;
@@ -99,6 +100,21 @@ public class PRController : ControllerBase
         var dto = await mediator.Send(new GetPRTemplateQuery(id.Value), cancellationToken);
         var item = mapper.Map<TemplateExtendedViewModel>(dto);
         return Ok(item);
+    }
+
+    /// <summary>
+    /// GET templates of user.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
+    /// <returns></returns>
+    [HttpGet("{userId}")]
+    [ProducesResponseType(200)]
+    [Produces("application/json")]
+    public async Task<ActionResult<IEnumerable<TemplateViewModel>>> GetTemplatesForUser([FromQuery]int userId, CancellationToken cancellationToken)
+    {
+        var templatesDto = await mediator.Send(new GetPrTemplatesForUserQuery(userId), cancellationToken);
+        return Ok(mapper.Map<IEnumerable<TemplateViewModel>>(templatesDto));
     }
 
     /// <summary>
