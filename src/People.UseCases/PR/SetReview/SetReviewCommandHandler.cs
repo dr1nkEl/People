@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using People.Domain.Reviews.Entities;
 using People.Infrastructure.Abstractions.Interfaces;
+using Saritasa.Tools.Domain.Exceptions;
 
 namespace People.UseCases.PR.SetReview;
 
@@ -49,6 +50,11 @@ internal class SetReviewCommandHandler : AsyncRequestHandler<SetReviewCommand>
         if (request.Deadline != null)
         {
             review.Deadline = DateOnly.FromDateTime(request.Deadline.Value.ToUniversalTime());
+
+            if (review.Deadline < DateOnly.FromDateTime(DateTime.UtcNow))
+            {
+                throw new DomainException("Неправильная дата.");
+            }
         }
 
         appDbContext.PerformanceReviews.Add(review);

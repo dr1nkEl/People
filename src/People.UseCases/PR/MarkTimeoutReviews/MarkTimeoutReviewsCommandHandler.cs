@@ -25,7 +25,7 @@ internal class MarkTimeoutReviewsCommandHandler : AsyncRequestHandler<MarkTimeou
     {
         var reviewsToMark = await appDbContext
             .PerformanceReviews
-            .Where(x => x.CompletedDate == null && x.Deadline <= DateOnly.FromDateTime(DateTime.Today))
+            .Where(x => x.CompletedDate == null && x.Deadline < DateOnly.FromDateTime(DateTime.Today))
             .ToListAsync(cancellationToken);
 
         foreach (var review in reviewsToMark)

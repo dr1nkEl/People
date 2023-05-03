@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using People.Domain.Reviews.Entities;
 using People.Infrastructure.Abstractions.Interfaces;
+using Saritasa.Tools.Domain.Exceptions;
 
 namespace People.UseCases.Reviews.GetReview;
 
@@ -40,7 +41,7 @@ internal class GetReviewQueryHandler : IRequestHandler<GetReviewQuery, Performan
             || pr.ReviewedUserReplyId == curUserId
             || !pr.Feedback.Any(x=>x.UserId == curUserId)))
         {
-            throw new Exception("Текущий пользователь не участвует в опросе.");
+            throw new DomainException("Текущий пользователь не участвует в опросе.");
         }
 
         return pr;
