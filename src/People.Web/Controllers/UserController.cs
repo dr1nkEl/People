@@ -85,6 +85,15 @@ public class UserController : Controller
     }
 
     /// <summary>
+    /// POST redirect to current user profile.
+    /// </summary>
+    [HttpPost]
+    public IActionResult MyProfile() => RedirectToAction("Info", new
+    {
+        userId = loggedUserAccessor.GetCurrentUserId(),
+    });
+
+    /// <summary>
     /// POST child users of user.
     /// </summary>
     /// <param name="userId">User ID.</param>

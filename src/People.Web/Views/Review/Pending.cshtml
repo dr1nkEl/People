@@ -13,14 +13,14 @@
                 <tr>
                     <td><a href="/User/Info?userId=@review.ReviewedUserId">@review.ReviewedUser.FullName</a></td>
                     <td>@(review.Deadline?.ToString("dd.MM.yyyy") ?? "No deadline set")</td>
-                    <td><a href="#">Link for review</a></td>
+                    <td><a href="/Review/Process/@review.Id">Link for review</a></td>
                 </tr>
             }
         </table>
     </div>
 
     <div class="col border">
-        <label for="myReviews">My reviews</label>
+        <label for="myReviews">Reviews of me</label>
         <table class="table table-primary table-hover col" style="margin:1%" id="myReviews">
             <tr>
                 <th>Reviewed user</th>
@@ -32,7 +32,7 @@
                 <tr>
                     <td><a href="/User/Info?userId=@review.ReviewedUserId">@review.ReviewedUser.FullName</a></td>
                     <td>@(review.Deadline?.ToString("dd.MM.yyyy") ?? "No deadline set")</td>
-                    <td><a href="#">Link for review</a></td>
+                    <td><a href="/Review/Process/@review.Id">Link for review</a></td>
                 </tr>
             }
         </table>

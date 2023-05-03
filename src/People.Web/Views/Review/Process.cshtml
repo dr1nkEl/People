@@ -1,0 +1,44 @@
+﻿@model ProcessViewModel
+@{
+    var questions = Model.IsPrForCurrentUser ? Model.Review.ReviewedUserQuestions : Model.Review.FeedbackQuestions;
+    var cnt = -1;
+}
+
+<form class="container" asp-action="Process" asp-controller="Review" method="post">
+    <label>Reviewed user is <a href="/User/Info?userId=@Model.Review.ReviewedUserId">@Model.Review.ReviewedUser.FullName</a></label>
+
+    @foreach (var question in questions)
+    {
+        cnt++;
+        <div class="row mx-auto p-2 border border-primary border-1 rounded">
+            <label class="col">@question.Title</label>
+
+            @if (question.AnswerType == AnswerType.Text)
+            {
+                <input name="Reply.Answers[@cnt].Text" class="form-control col" id="Reply.Answers[@cnt].input" />
+            }
+            else
+            {
+                <select class="form-select col" name="Reply.Answers[@cnt].OptionId" id="Reply.Answers[@cnt].input">
+                    @foreach(var option in question.Options)
+                    {
+                        <option value="@option.Id">@option.Title</option>
+                    }
+                </select>
+            }
+
+            <input name="Reply.Answers[@cnt].QuestionId" value="@question.Id" hidden />
+            <label for="Reply.Answers[@cnt].NoAnswer" class="col">Skip question</label>
+            <input type="checkbox" name="Reply.Answers[@cnt].NoAnswer" id="Reply.Answers[@cnt].NoAnswer" class="col" onclick="switchDisable(this, `Reply.Answers[@cnt].input`)" />
+        </div>
+    }
+
+    <button class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+    function switchDisable(item, itemId){
+        let el = document.getElementById(itemId);
+        el.disabled = item.checked;
+    }
+</script>

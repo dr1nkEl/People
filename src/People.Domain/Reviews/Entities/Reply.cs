@@ -25,7 +25,7 @@ public class Reply
     /// <summary>
     /// Date when user has submitted the feedback.
     /// </summary>
-    public DateTime SubmittedAt { get; set; }
+    public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// Indicates if user has opted out from giving the feedback for a review.
