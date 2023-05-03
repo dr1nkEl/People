@@ -11,17 +11,14 @@ namespace People.UseCases.Reviews.GetPendingReviews;
 internal class GetPendingReviewsQueryHandler : IRequestHandler<GetPendingReviewsQuery, (IEnumerable<PerformanceReview> ReviewsForUser, IEnumerable<PerformanceReview> UserReviews)>
 {
     private readonly IAppDbContext appDbContext;
-    private readonly ILoggedUserAccessor loggedUserAccessor;
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="appDbContext"><see cref="IAppDbContext"/>.</param>
-    /// <param name="loggedUserAccessor"><see cref="ILoggedUserAccessor"/>.</param>
-    public GetPendingReviewsQueryHandler(IAppDbContext appDbContext, ILoggedUserAccessor loggedUserAccessor)
+    public GetPendingReviewsQueryHandler(IAppDbContext appDbContext)
     {
         this.appDbContext = appDbContext;
-        this.loggedUserAccessor = loggedUserAccessor;
     }
 
     /// <inheritdoc/>

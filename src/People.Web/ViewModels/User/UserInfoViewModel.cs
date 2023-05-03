@@ -1,4 +1,5 @@
-﻿using People.UseCases.Common.Dtos.Administration;
+﻿using People.Domain.Reviews.Entities;
+using People.UseCases.Common.Dtos.Administration;
 using People.UseCases.Common.Dtos.Branch;
 using People.UseCases.Common.Dtos.Position;
 using People.UseCases.Common.Dtos.User;
@@ -21,6 +22,16 @@ public record UserInfoViewModel
 
     /// <inheritdoc cref="UserShortInfoDto"/>
     public IEnumerable<UserShortInfoDto> Users { get; set; }
+
+    /// <summary>
+    /// Reviews which user should give answers for.
+    /// </summary>
+    public IEnumerable<PerformanceReview> UserReviews { get; set; }
+
+    /// <summary>
+    /// Reviews for user itself.
+    /// </summary>
+    public IEnumerable<PerformanceReview> ReviewsForUser { get; set; }
 
     /// <summary>
     /// All roles.

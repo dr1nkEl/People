@@ -9,6 +9,7 @@ using People.UseCases.Branches;
 using People.UseCases.Branches.GetBranchNameById;
 using People.UseCases.Common.Identity;
 using People.UseCases.Positions.Queries.GetPositions;
+using People.UseCases.Reviews.GetPendingReviews;
 using People.UseCases.Users.AddReportingUsers;
 using People.UseCases.Users.AddUserToPosition;
 using People.UseCases.Users.ChangeUserRole;
@@ -67,11 +68,15 @@ public class UserController : Controller
         var user = await mediator.Send(new GetUserInfoByIdQuery(userId), cancellationToken);
         var branch = await mediator.Send(new GetBranchNameByIdQuery(user.BranchId), cancellationToken);
         var allRoles = await mediator.Send(new GetRolesAndClaimsQuery(), cancellationToken);
+        var pendingReviews = await mediator.Send(new GetPendingReviewsQuery(userId), cancellationToken);
+
         var viewModel = new UserInfoViewModel()
         {
             User = user,
             Branch = branch,
             AllRoles = allRoles,
+            UserReviews = pendingReviews.UserReviews,
+            ReviewsForUser = pendingReviews.ReviewsForUser,
         };
 
         if (loggedUserAccessor.HasClaim(CustomClaimTypes.Permission, Permissions.Management))
