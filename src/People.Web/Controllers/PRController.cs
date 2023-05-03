@@ -187,7 +187,8 @@ public class PRController : Controller
     /// <summary>
     /// GET finished reviews page.
     /// </summary>
-    public async Task<IActionResult> FinishedReviews(CancellationToken cancellationToken)
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Finished(CancellationToken cancellationToken)
     {
         return View(await mediator.Send(new GetFinishedReviewsQuery(), cancellationToken));
     }

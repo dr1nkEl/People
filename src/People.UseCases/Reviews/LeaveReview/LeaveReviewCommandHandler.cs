@@ -26,10 +26,17 @@ internal class LeaveReviewCommandHandler : AsyncRequestHandler<LeaveReviewComman
     /// <inheritdoc/>.
     protected override async Task Handle(LeaveReviewCommand request, CancellationToken cancellationToken)
     {
+        var curUserId = loggedUserAccessor.GetCurrentUserId();
+
         var pr = await appDbContext.PerformanceReviews
             .Include(x=>x.Feedback)
             .Include(x=>x.ReviewedUserReply)
             .FirstAsync(x => x.Id == request.PrId, cancellationToken);
+
+        if (!(pr.FeedbackUsers.Any(x=>x.Id == curUserId) || pr.ReviewedUserReplyId == curUserId || !pr.Feedback.Any(x => x.UserId == curUserId)))
+        {
+            throw new Exception("Текущий пользователь не участвует в этом опросе.");
+        }
 
         request.UserReply.UserId = loggedUserAccessor.GetCurrentUserId();
 

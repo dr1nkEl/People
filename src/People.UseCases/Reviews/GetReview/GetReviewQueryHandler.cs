@@ -11,24 +11,38 @@ namespace People.UseCases.Reviews.GetReview;
 internal class GetReviewQueryHandler : IRequestHandler<GetReviewQuery, PerformanceReview>
 {
     private readonly IAppDbContext appDbContext;
+    private readonly ILoggedUserAccessor loggedUserAccessor;
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="appDbContext"><see cref="IAppDbContext"/>.</param>
-    public GetReviewQueryHandler(IAppDbContext appDbContext)
+    /// <param name="loggedUserAccessor"><see cref="ILoggedUserAccessor"/>.</param>
+    public GetReviewQueryHandler(IAppDbContext appDbContext, ILoggedUserAccessor loggedUserAccessor)
     {
         this.appDbContext = appDbContext;
+        this.loggedUserAccessor = loggedUserAccessor;
     }
 
     /// <inheritdoc/>
     public async Task<PerformanceReview> Handle(GetReviewQuery request, CancellationToken cancellationToken)
     {
-        return await appDbContext.PerformanceReviews
+        var curUserId = loggedUserAccessor.GetCurrentUserId();
+
+        var pr = await appDbContext.PerformanceReviews
             .Include(x=>x.FeedbackQuestions)
             .Include(x=>x.ReviewedUserQuestions)
             .Include(x=>x.ReviewedUser)
             .Include(x=>x.ReviewedUserReply)
             .FirstAsync(x => x.Id == request.PrId, cancellationToken);
+
+        if (!(pr.FeedbackUsers.Any(x => x.Id == curUserId)
+            || pr.ReviewedUserReplyId == curUserId
+            || !pr.Feedback.Any(x=>x.UserId == curUserId)))
+        {
+            throw new Exception("Текущий пользователь не участвует в опросе.");
+        }
+
+        return pr;
     }
 }
