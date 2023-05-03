@@ -33,6 +33,7 @@ internal class GetPendingReviewsQueryHandler : IRequestHandler<GetPendingReviews
             .Include(x=>x.Feedback)
             .ToListAsync(cancellationToken))
             .Where(x => x.Deadline >= DateOnly.FromDateTime(DateTime.Today) || x.Deadline == null)
+            .Where(x => x.CompletedDate == null)
             .ToList();
 
         var userReviews = pendingPrs.Where(x => x.ReviewedUserId == request.UserId && x.ReviewedUserReplyId == null).ToList();

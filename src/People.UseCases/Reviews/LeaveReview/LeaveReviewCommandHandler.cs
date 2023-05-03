@@ -41,6 +41,12 @@ internal class LeaveReviewCommandHandler : AsyncRequestHandler<LeaveReviewComman
         {
             pr.Feedback.Add(request.UserReply);
         }
+
+        if (pr.ReviewedUserReplyId != null && pr.FeedbackUsers.Count == pr.Feedback.Count)
+        {
+            pr.CompletedDate = DateTime.UtcNow;
+        }
+
         appDbContext.PerformanceReviews.Update(pr);
         await appDbContext.SaveChangesAsync(cancellationToken);
     }
