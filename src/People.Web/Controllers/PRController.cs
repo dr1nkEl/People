@@ -9,12 +9,15 @@ using People.UseCases.Positions.Queries.GetPositions;
 using People.UseCases.PR.CreateTemplate;
 using People.UseCases.PR.CreateType;
 using People.UseCases.PR.DeleteTemplate;
+using People.UseCases.PR.GetReply;
 using People.UseCases.PR.GetSetReviews;
 using People.UseCases.PR.GetTemplate;
 using People.UseCases.PR.GetTemplates;
 using People.UseCases.PR.GetTypes;
 using People.UseCases.PR.SetReview;
+using People.UseCases.Reviews.GetReview;
 using People.UseCases.Users;
+using People.UseCases.Users.GetUserById;
 using People.Web.ViewModels;
 using People.Web.ViewModels.Position;
 using People.Web.ViewModels.PR;
@@ -157,7 +160,27 @@ public class PRController : Controller
     [HttpGet("[action]")]
     public async Task<IActionResult> Reviews(CancellationToken cancellationToken)
     {
-        return View(await mediator.Send(new GetSetReviewsQuery(), cancellationToken));
+        var reviews = await mediator.Send(new GetSetReviewsQuery(), cancellationToken);
+        return View(reviews);
+    }
+
+    /// <summary>
+    /// GET page with reponse of given user.
+    /// </summary>
+    /// <param name="prId">ID of PR.</param>
+    /// <param name="userId">ID of user.</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+    /// <returns></returns>
+    [HttpGet("[action]/{prId}/{userId}")]
+    public async Task<IActionResult> Feedback([FromRoute]int prId, [FromRoute]int userId, CancellationToken cancellationToken)
+    {
+        var review = await mediator.Send(new GetReviewQuery(prId), cancellationToken);
+
+        var userFeedback = await mediator.Send(new GetUserByIdQuery() { UserId = userId }, cancellationToken);
+        var feedBackToUser = await mediator.Send(new GetUserByIdQuery() { UserId = review.ReviewedUserId }, cancellationToken);
+        var reply = await mediator.Send(new GetReplyQuery(prId, userId));
+
+        return View(new FeedbackViewModel() { FeedbackUser = mapper.Map<User>(userFeedback), Reply = reply, ReviewedUser = mapper.Map<User>(feedBackToUser)});
     }
 
     private async Task<TemplateOptionsViewModel> GetTemplateOptionsVMAsync(CancellationToken cancellationToken)

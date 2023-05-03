@@ -1,0 +1,29 @@
+﻿@model FeedbackViewModel
+
+<div class="container">
+    <div class="row">
+        <label for="reviewedUser">User under review</label>
+        <a id="reviewedUser" href="/User/Info?userId=@Model.ReviewedUser.Id">@Model.ReviewedUser.FullName</a>
+    </div>
+
+    <div class="row">
+        <label for="reviewedByUser">Reviewed by</label>
+        <a id="reviewedByUser" href="/User/Info?userId=@Model.FeedbackUser.Id">@Model.FeedbackUser.FullName</a>
+    </div>
+</div>
+
+<table class="table table-primary table-striped table-hover">
+    <tr>
+        <th>Question title</th>
+        <th>Question answer</th>
+        <th>Skipped</th>
+    </tr>
+    @foreach (var answer in Model.Reply.Answers.OrderBy(x=>x.Question.Title))
+    {
+        <tr>
+            <td>@answer.Question.Title</td>
+            <td>@(answer.Question.AnswerType == AnswerType.Text? answer.Text: answer.Question.Options.FirstOrDefault(x=>x.Id == answer.OptionId)?.Title)</td>
+            <td><input class="form-check" type="checkbox" @(answer.NoAnswer ? "checked" : "") disabled /></td>
+        </tr>
+    }
+</table>

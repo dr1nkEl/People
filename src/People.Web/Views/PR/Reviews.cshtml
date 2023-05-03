@@ -5,8 +5,12 @@
         <th>Reviewed user</th>
         <th>Deadline</th>
         <th>Created at</th>
+
         <th>Created by</th>
         <th>Reviewed by</th>
+        <th>Reviewed user reply</th>
+
+        <th>Reviewers feedback</th>
     </tr>
     @{
         foreach(var review in Model)
@@ -15,11 +19,28 @@
                 <td><a href="/User/Info?userId=@review.ReviewedUserId">@review.ReviewedUser.FullName</a></td>
                 <td>@(review.Deadline?.ToString("dd.MM.yyyy")??"No deadline set")</td>
                 <td>@review.CreatedAt</td>
+
                 <td><a href="/User/Info?userId=@review.CreatedById">@review.CreatedBy.FullName</a></td>
                 <td>
                     @foreach(var user in review.FeedbackUsers)
                     {
                         <a href="/User/Info?userId=@user.Id">@user.FullName</a>
+                    }
+                </td>
+                <td>
+                    @if (review.ReviewedUserReplyId == null)
+                    {
+                        <a href="#">Reviewed user didnt reply.</a>
+                    }
+                    else
+                    {
+                        <a href="/admin/PR/Feedback/@review.Id/@review.ReviewedUserId">Reviewed user reply.</a>
+                    }
+                </td>
+                <td>
+                    @foreach(var feedBack in review.Feedback)
+                    {
+                        <a href="/admin/PR/Feedback/@review.Id/@feedBack.User.Id">@feedBack.User.FullName</a>
                     }
                 </td>
             </tr>
