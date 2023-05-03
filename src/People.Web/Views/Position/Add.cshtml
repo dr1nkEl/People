@@ -5,11 +5,11 @@
 <form asp-action="Add" asp-controller="Position" method="post" onsubmit="return jQueryModalPost(this, '@Url.Action("List","Position")')">
     <div class="form">
         <div class="attr">
-           <label for="name">Position name</label>
+           <label for="name">Имя позиции</label>
            @Html.TextBox("name", null, new {@class = "form-control"})
         </div>
        <div class="attr">
-          <label for="childPositions">Child positions</label>
+          <label for="childPositions">Подчиняющиеся позиции</label>
           <select name="childIds" class="form-control" multiple>
               @foreach (var position in Model.Positions)
               {
@@ -18,7 +18,7 @@
             </select>   
        </div>
        <div class="attr">
-          <label for="childPositions">Parent positions</label>
+          <label for="childPositions">Родительская позиция</label>
           <select name="parentId" class="form-control">
               <option disabled selected/>
               @foreach (var position in Model.Positions)
@@ -29,6 +29,6 @@
        </div>
     </div>
     <div>
-        <button type="submit" class="btn bg-success text-white" onclick="closeWindow()"> Add position </button>
+        <button type="submit" class="btn bg-success text-white" onclick="closeWindow()"> Добавить позицию </button>
     </div>
 </form>

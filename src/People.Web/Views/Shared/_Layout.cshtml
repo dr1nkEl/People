@@ -22,10 +22,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="User" asp-action="List">Home</a>
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="List">Домашняя</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Administration" asp-action="Attributes">Administration</a>
+                            <a class="nav-link text-dark" asp-controller="Administration" asp-action="Attributes">Администрирование</a>
                         </li>
                     </ul>
                 </div>
@@ -40,12 +40,12 @@
                                 <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
                                     <li>
                                         <form method="post" asp-controller="User" asp-action="MyProfile">
-                                            <input type="submit" value="Profile" class="dropdown-item" />
+                                            <input type="submit" value="Профиль" class="dropdown-item" />
                                         </form>
                                     </li>
                                     <li>
                                         <form method="post" asp-controller="Auth" asp-action="Logout">
-                                            <input type="submit" value="Log out" class="dropdown-item"/>
+                                            <input type="submit" value="Выйти из аккаунта" class="dropdown-item"/>
                                         </form>
                                     </li>
                                 </ul>
@@ -63,34 +63,34 @@
             @if (!Context.Request.Path.ToString().ToLower().Contains("admin"))
             {
                 <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Branch" class="nav-link">Branches</a>
+                    <a asp-action="Index" asp-controller="Branch" class="nav-link">Отделения</a>
                 </li>
                 <li class="nav-item">
-                    <a asp-action="List" asp-controller="User" class="nav-link">User List</a>
+                    <a asp-action="List" asp-controller="User" class="nav-link">Список пользователей</a>
                 </li>
                 <li class="nav-item">
-                    <a asp-action="Pending" asp-controller="Review" class="nav-link">Pending reviews</a>
+                    <a asp-action="Pending" asp-controller="Review" class="nav-link">Список ожидания</a>
                 </li>
             }
             else
             {
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("RoleListAdministration", "Administration")">Roles</a>
+                    <a class="nav-link" href="@Url.Action("RoleListAdministration", "Administration")">Роли</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Attributes", "Administration")">Attributes</a>
+                    <a class="nav-link" href="@Url.Action("Attributes", "Administration")">Атрибуты</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "Position")">Positions</a>
+                    <a class="nav-link" href="@Url.Action("Index", "Position")">Позиции</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("PRTemplates", "Administration")">PR templates</a>
+                    <a class="nav-link" href="@Url.Action("PRTemplates", "Administration")">Шаблоны</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("SetReview", "PR")">Set PR</a>
+                    <a class="nav-link" href="@Url.Action("SetReview", "PR")">Назначение оценки</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Reviews", "PR")">List of reviews</a>
+                    <a class="nav-link" href="@Url.Action("Reviews", "PR")">Назначенные оценки</a>
                 </li>
             }
         </ul>

@@ -5,7 +5,7 @@
 }
 
 <form class="container" asp-action="Process" asp-controller="Review" method="post">
-    <label>Reviewed user is <a href="/User/Info?userId=@Model.Review.ReviewedUserId">@Model.Review.ReviewedUser.FullName</a></label>
+    <label>Оцениваемый пользователь <a href="/User/Info?userId=@Model.Review.ReviewedUserId">@Model.Review.ReviewedUser.FullName</a></label>
 
     @foreach (var question in questions)
     {
@@ -28,12 +28,12 @@
             }
 
             <input name="Reply.Answers[@cnt].QuestionId" value="@question.Id" hidden />
-            <label for="Reply.Answers[@cnt].NoAnswer" class="col">Skip question</label>
+            <label for="Reply.Answers[@cnt].NoAnswer" class="col">Пропустить вопрос</label>
             <input type="checkbox" name="Reply.Answers[@cnt].NoAnswer" id="Reply.Answers[@cnt].NoAnswer" class="col" onclick="switchDisable(this, `Reply.Answers[@cnt].input`)" />
         </div>
     }
 
-    <button class="btn btn-primary">Submit</button>
+    <button class="btn btn-primary">Подтвердить</button>
 </form>
 
 <script>

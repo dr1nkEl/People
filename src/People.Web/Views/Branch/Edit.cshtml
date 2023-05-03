@@ -18,17 +18,17 @@
         <label>@Model.Branch.Name</label>
     </div>
 
-    <label for="userSelector">Director</label>
+    <label for="userSelector">Директор отделения</label>
 
     <select asp-for="Branch.DirectorId" id="userSelector" class="w-50">
-        <option value="">No director set</option>
+        <option value="">Нет директора.</option>
         @foreach (var user in Model.Users)
         {
             <option value="@user.Id" data-avatar="@user.Avatar"><span><img src="@user.Avatar"/></span>@user.FullName</option>
         }
     </select>
     <div>
-        <button>Save</button>
+        <button>Сохранить</button>
     </div>
 </form>
 

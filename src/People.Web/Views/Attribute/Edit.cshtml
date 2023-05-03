@@ -2,11 +2,11 @@
 
 <form method="post" asp-action="Edit" asp-controller="Attribute" style="text-align:center">
     <div>
-        <label for="attributeName">Name</label>
+        <label for="attributeName">Имя</label>
         <input id="attributeName" asp-for="Attribute.Name" required/>
     </div>
 
-    <label for="allowEditSelector">Edit roles</label>
+    <label for="allowEditSelector">Роли с правом редактирования</label>
     <div>
         <select id="allowEditSelector" multiple
             asp-for="AllowEditRoles"
@@ -14,7 +14,7 @@
         </select>
     </div>
     
-    <label for="allowViewSelector">View roles</label>
+    <label for="allowViewSelector">Роли с правом просмотра</label>
     <div>
         <select id="allowViewSelector" multiple
             asp-for="AllowViewRoles"
@@ -30,12 +30,12 @@
     </select>
 
     <div>
-        <label for="Attribute.AllowEditSelf">Allow edit self</label>
+        <label for="Attribute.AllowEditSelf">Владелец атрибута может его редактировать</label>
         @(Html.CheckBoxFor(attr => attr.Attribute.AllowEditSelf))
     </div>
 
     <div>
-        <label for="Attribute.AllowViewSelf">Allow view self</label>
+        <label for="Attribute.AllowViewSelf">Владелец атрибута может его видеть</label>
         @(Html.CheckBoxFor(attr => attr.Attribute.AllowViewSelf))
     </div>
 
@@ -44,22 +44,22 @@
     </div>
 
     <div>
-        <button class="btn btn-primary">Save</button>
+        <button class="btn btn-primary">Сохранить</button>
     </div>
 </form>
 
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</button>
 
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Are you sure about deleting: @Model.Attribute.Name ?</h5>
+        <h5 class="modal-title" id="deleteModalLabel">Подтвердить удаление: @Model.Attribute.Name ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
         <form class="modal-body" action="/admin/Attribute/Delete/@Model.Attribute.Id" method="post">
-            <button class="btn btn-danger">Delete</button>
+            <button class="btn btn-danger">Удалить</button>
         </form>
     </div>
   </div>

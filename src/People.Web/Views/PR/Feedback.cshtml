@@ -14,9 +14,9 @@
 
 <table class="table table-primary table-striped table-hover">
     <tr>
-        <th>Question title</th>
-        <th>Question answer</th>
-        <th>Skipped</th>
+        <th>Вопрос</th>
+        <th>Ответ</th>
+        <th>Пропущен</th>
     </tr>
     @foreach (var answer in Model.Reply.Answers.OrderBy(x=>x.Question.Title))
     {

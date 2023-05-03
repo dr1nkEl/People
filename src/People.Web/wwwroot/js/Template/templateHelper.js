@@ -77,13 +77,13 @@ function addQuestionInput(parentId, className, data) {
 
     $('#' + parentId).append('<div style="margin: 1% auto;" class="row mx-auto p-2 border border-primary border-3 rounded d-grid gap-3 ' + className + '" id="' + id + '">' +
         '<label class="row mx-auto ">Question</label>' +
-        '<input class="form-control col questionTitle questionTitle'+counter+'" placeholder = "Title" " required/>' +
+        '<input class="form-control col questionTitle questionTitle'+counter+'" placeholder = "Содержание вопроса" " required/>' +
         '<div class="row mx-auto">'+
-        '<label class="col" for="answerTypeSelector' + counter + '">Answer type</label>' +
+        '<label class="col" for="answerTypeSelector' + counter + '">Тип вопроса</label>' +
         '<select data-counter="' + counter + '" class="form-select col questionType questionType' + counter + '" id="answerTypeSelector' + counter + '"></select>' +
         '</div>'+
-        '<div id="' + optionBlockId + '"><button onclick="addQuestionOption(\'optionBlock' + counter + '\', null);" class="btn btn-primary" type="button">Add Option</button></div>' +
-        '<a class="col btn btn-danger" id="delete' + id + '">Remove this question</a></div>');
+        '<div id="' + optionBlockId + '"><button onclick="addQuestionOption(\'optionBlock' + counter + '\', null);" class="btn btn-primary" type="button">Добавить опцию</button></div>' +
+        '<a class="col btn btn-danger" id="delete' + id + '">Удалить этот вопрос</a></div>');
     $('#delete' + id).on('click', function () {
         $('#' + id).remove();
     });
@@ -127,8 +127,8 @@ function addQuestionOption(parentId, data) {
     const id = parentId + counter;
 
     $('#' + parentId).append('<div id="' + id + '" class="questionOption row w-100 mx-auto" ">' +
-        '<label class="row mx-auto">Option</label>'+
-        '<input class="optionTitle form-control col" placeholder = "Title" required>'+
+        '<label class="row mx-auto">Опция</label>'+
+        '<input class="optionTitle form-control col" placeholder = "Опция" required>'+
         '<a class="col btn btn-secondary" id="delete' + id + '">X</a></div >');
     $('#delete' + id).on('click', function () {
         $('#' + id).remove();

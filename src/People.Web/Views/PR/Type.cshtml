@@ -1,25 +1,25 @@
 ﻿@model NewReviewTypeViewModel
 
 <form asp-action="Type" asp-controller="PR">
-    <label for="typeName">Name</label>
+    <label for="typeName">Имя</label>
     <input id="typeName" asp-for="Name" class="form-control" required/>
 
-    <label>Interval</label>
+    <label>Интервал</label>
     <select id="typeSelector" asp-for="Interval" class="row mx-auto w-25">
         <option value="">None</option>
     </select>
 
     <div class="mx-auto w-50">
-        <label for="typeIntervalCheckbox">Use custom interval</label>
+        <label for="typeIntervalCheckbox">Использовать произвольный интервал</label>
         <input id="typeIntervalCheckbox" type="checkbox"/>
     </div>
     
     <div id="intervalBlock">
-        <label for="typeIntervalAmount">Interval amount</label>
-        <input class="form-control" id="typeIntervalAmount" asp-for="IntervalAmount" placeholder="Interval"/>
+        <label for="typeIntervalAmount">Значение интервала</label>
+        <input class="form-control" id="typeIntervalAmount" asp-for="IntervalAmount" placeholder="Интервал"/>
     </div>
     
-    <button class="btn btn-success">Create</button>
+    <button class="btn btn-success">Создать</button>
 </form>
 
 @section Scripts{

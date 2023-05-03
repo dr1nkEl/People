@@ -18,7 +18,7 @@
 <form asp-action="SetReview" asp-controller="PR" method="post">
     <div>
         <div class="w-100" style="margin: 1% auto;">
-            <label for="userSelector">Reviewed user</label>
+            <label for="userSelector">Ответчик</label>
             <select asp-for="ReviewedUserId" id="userSelector" class="w-50" required>
                 @foreach (var user in Model.Users)
                 {
@@ -28,13 +28,13 @@
         </div>
 
         <div class="w-100" style="margin: 1% auto;">
-            <label for="templateSelector">Template</label>
+            <label for="templateSelector">Шаблон</label>
             <select asp-for="TemplateId" id="templateSelector" class="w-50" required>
             </select>
         </div>
 
         <div class="w-100" style="margin: 1% auto;">
-            <label for="deadlineInput">Deadline</label>
+            <label for="deadlineInput">Срок</label>
             <input type="date" id="deadlineInput"
                    min="@DateTime.Today.ToString("yyyy-MM-dd")"
                    required
@@ -42,7 +42,7 @@
         </div>
 
         <div class="w-100" style="margin: 1% auto;">
-            <label for="userSelector">Reviewed by users</label>
+            <label for="userSelector">Ревьюверы</label>
             <select asp-for="ReviewedByUsersIds" id="reviewersSelector" class="w-50" required multiple>
                 @foreach (var user in Model.Users)
                 {
@@ -52,9 +52,8 @@
         </div>
     </div>
 
-    
     <div style="margin: 1% auto;">
-        <button class="btn btn-primary">Save</button>
+        <button class="btn btn-primary">Сохранить</button>
     </div>
 </form>
 

@@ -10,11 +10,11 @@
              @Html.Hidden("id", Model.EditedPosition.Id)
         </div>
         <div class="form-group">
-            <label for="name">Position name</label>
+            <label for="name">Имя позиции</label>
             @Html.TextBox("name", Model.EditedPosition.Name, new {@class = "form-control"})
         </div>
         <div class="attr">
-          <label for="childPositions">Child positions</label>
+          <label for="childPositions">Подчиняющиеся позиции</label>
           <select name="childIds" class="form-control" multiple>
               @foreach (var position in Model.Positions)
               {
@@ -23,7 +23,7 @@
             </select>
        </div>
        <div class="attr">
-          <label for="parentPositions">Parent positions</label>
+          <label for="parentPositions">Родительская позиция</label>
           <select name="parentId" class="form-control">
               <option disabled selected/>
               @foreach (var position in Model.Positions)
@@ -33,6 +33,6 @@
           </select>
        </div>
     </div>
-    <button type="submit" class="btn btn-info text-white" onclick="closeWindow()"> Apply Changes</button>
+    <button type="submit" class="btn btn-info text-white" onclick="closeWindow()"> Применить изменения </button>
 </form>
 

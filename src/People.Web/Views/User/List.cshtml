@@ -1,9 +1,9 @@
 ﻿@model UserListViewModel
 
 <div>
-    <label>Branch</label>
+    <label>Отделение</label>
     <select id="branchSelector" onchange="setUsersTable('userTableBody', 'branchSelector', 'img-fluid')">
-        <option>Any</option>
+        <option>Любое</option>
         @foreach (var branch in Model.Branches)
         {
             <option value="@branch.Id">@branch.Name</option>
@@ -13,9 +13,9 @@
 
 <table class="table">
     <tr>
-        <th>Avatar</th>
-        <th>Full name</th>
-        <th>Position</th>
+        <th>Аватар</th>
+        <th>Полное имя</th>
+        <th>Позиции</th>
     </tr>
     
     <tbody id="userTableBody">

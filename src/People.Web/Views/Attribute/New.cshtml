@@ -6,7 +6,7 @@
         <input asp-for="Name" id="attributeName" required/>
     </div>
     
-    <label for="allowEditSelector">Edit roles</label>
+    <label for="allowEditSelector">Роли с правом редактирования</label>
     <div>
         <select id="allowEditSelector" multiple
             asp-for="EditRolesIds">
@@ -18,7 +18,7 @@
     </div>
     
         
-    <label for="allowViewSelector">View roles</label>
+    <label for="allowViewSelector">Роли с правом просмотра</label>
 
     <div>
         <select id="allowViewSelector" multiple
@@ -39,12 +39,12 @@
     </select>
 
     <div>
-        <label for="editSelfCheckbox">Allow edit self</label>
+        <label for="editSelfCheckbox">Владелец атрибута может его редактировать</label>
         <input id="editSelfCheckbox" type="checkbox" asp-for=AllowEditSelf />
     </div>
     
     <div>
-        <label for="viewSelfCheckbox">Allow view self</label>
+        <label for="viewSelfCheckbox">Владелец атрибута может его видеть</label>
         <input id="viewSelfCheckbox" type="checkbox" asp-for="AllowViewSelf" />
     </div>
     
@@ -54,7 +54,7 @@
     </div>
     
     <div>
-        <button class="btn btn-primary">Create</button>
+        <button class="btn btn-primary">Создать</button>
     </div>
 </form>
 
