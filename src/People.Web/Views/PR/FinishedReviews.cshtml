@@ -1,0 +1,52 @@
+﻿@model IEnumerable<PerformanceReview>
+
+<table class="mx-auto table table-primary table-hover">
+    <tr>
+        <th>Ответчик</th>
+        <th>Срок</th>
+        <th>Создано</th>
+
+        <th>Кем создано</th>
+        <th>Ревьюверы</th>
+        <th>Ответ ответчика</th>
+        <th>Ответы ревьюверов</th>
+        <th>Завершено</th>
+        <th>Вышел срок</th>
+    </tr>
+    @{
+        foreach (var review in Model)
+        {
+            <tr>
+                <td><a href="/User/Info?userId=@review.ReviewedUserId">@review.ReviewedUser.FullName</a></td>
+                <td>@(review.Deadline?.ToString("dd.MM.yyyy") ?? "No deadline set")</td>
+                <td>@review.CreatedAt</td>
+
+                <td><a href="/User/Info?userId=@review.CreatedById">@review.CreatedBy.FullName</a></td>
+                <td>
+                    @foreach (var user in review.FeedbackUsers)
+                    {
+                        <a href="/User/Info?userId=@user.Id">@user.FullName</a>
+                    }
+                </td>
+                <td>
+                    @if (review.ReviewedUserReplyId == null)
+                    {
+                        <a href="#">Reviewed user didnt reply.</a>
+                    }
+                    else
+                    {
+                        <a href="/admin/PR/Feedback/@review.Id/@review.ReviewedUserId">Reviewed user reply.</a>
+                    }
+                </td>
+                <td>
+                    @foreach (var feedBack in review.Feedback)
+                    {
+                        <a href="/admin/PR/Feedback/@review.Id/@feedBack.User.Id">@feedBack.User.FullName</a>
+                    }
+                </td>
+                <td>@review.CompletedDate.Value.ToString("HH:mm dd.MM.yyy")</td>
+                <td><input class="form-check" type="checkbox" @(review.IsFinishedByTimeout.Value? "checked" : "") disabled /></td>
+            </tr>
+        }
+    }
+</table>

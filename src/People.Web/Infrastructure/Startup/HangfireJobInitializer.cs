@@ -1,5 +1,6 @@
 ﻿using Extensions.Hosting.AsyncInitialization;
 using Hangfire;
+using People.Web.BackgroundJobs;
 
 namespace People.Web.Infrastructure.Startup;
 
@@ -18,5 +19,7 @@ internal class HangfireJobnitializer : IAsyncInitializer
 
     private static void AddDefaultRecurringJobs()
     {
+        RecurringJob.AddOrUpdate<ReviewBackgroundJobs>("MarkTimeoutReviews", x => x.ProcessTimeoutReviewsAsync(default), Cron.Daily);
+        RecurringJob.Trigger("MarkTimeoutReviews");
     }
 }

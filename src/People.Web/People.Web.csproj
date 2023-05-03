@@ -49,8 +49,4 @@
     <ProjectReference Include="..\People.UseCases\People.UseCases.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="BackgroundJobs\" />
-  </ItemGroup>
-
 </Project>

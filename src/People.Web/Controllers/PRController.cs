@@ -9,6 +9,7 @@ using People.UseCases.Positions.Queries.GetPositions;
 using People.UseCases.PR.CreateTemplate;
 using People.UseCases.PR.CreateType;
 using People.UseCases.PR.DeleteTemplate;
+using People.UseCases.PR.GetFinishedReviews;
 using People.UseCases.PR.GetReply;
 using People.UseCases.PR.GetSetReviews;
 using People.UseCases.PR.GetTemplate;
@@ -181,6 +182,14 @@ public class PRController : Controller
         var reply = await mediator.Send(new GetReplyQuery(prId, userId));
 
         return View(new FeedbackViewModel() { FeedbackUser = mapper.Map<User>(userFeedback), Reply = reply, ReviewedUser = mapper.Map<User>(feedBackToUser)});
+    }
+
+    /// <summary>
+    /// GET finished reviews page.
+    /// </summary>
+    public async Task<IActionResult> FinishedReviews(CancellationToken cancellationToken)
+    {
+        return View(await mediator.Send(new GetFinishedReviewsQuery(), cancellationToken));
     }
 
     private async Task<TemplateOptionsViewModel> GetTemplateOptionsVMAsync(CancellationToken cancellationToken)

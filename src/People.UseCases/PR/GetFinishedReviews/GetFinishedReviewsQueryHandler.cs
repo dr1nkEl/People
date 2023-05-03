@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using People.Domain.Reviews.Entities;
 using People.Infrastructure.Abstractions.Interfaces;
 
-namespace People.UseCases.PR.GetSetReviews;
+namespace People.UseCases.PR.GetFinishedReviews;
 
 /// <summary>
-/// Handler for <see cref="GetSetReviewsQuery"/>.
+/// Handler for <see cref="GetFinishedReviewsQuery"/>.
 /// </summary>
-internal class GetSetReviewsQueryHandler : IRequestHandler<GetSetReviewsQuery, IEnumerable<PerformanceReview>>
+internal class GetFinishedReviewsQueryHandler : IRequestHandler<GetFinishedReviewsQuery, IEnumerable<PerformanceReview>>
 {
     private readonly IAppDbContext appDbContext;
 
@@ -16,13 +16,13 @@ internal class GetSetReviewsQueryHandler : IRequestHandler<GetSetReviewsQuery, I
     /// Constructor.
     /// </summary>
     /// <param name="appDbContext"><see cref="IAppDbContext"/>.</param>
-    public GetSetReviewsQueryHandler(IAppDbContext appDbContext)
+    public GetFinishedReviewsQueryHandler(IAppDbContext appDbContext)
     {
         this.appDbContext = appDbContext;
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<PerformanceReview>> Handle(GetSetReviewsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<PerformanceReview>> Handle(GetFinishedReviewsQuery request, CancellationToken cancellationToken)
     {
         return (await appDbContext
             .PerformanceReviews
@@ -33,8 +33,7 @@ internal class GetSetReviewsQueryHandler : IRequestHandler<GetSetReviewsQuery, I
             .Include(x => x.ReviewedUserQuestions)
             .Include(x => x.FeedbackUsers)
             .ToListAsync(cancellationToken))
-            .Where(x => x.Deadline >= DateOnly.FromDateTime(DateTime.Today) || x.Deadline == null)
-            .Where(x=>x.CompletedDate == null)
+            .Where(x => x.CompletedDate != null)
             .ToList();
     }
 }

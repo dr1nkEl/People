@@ -87,4 +87,9 @@ public class PerformanceReview
     /// If this has value, it means that review is completed and locked out for editing.
     /// </summary>
     public DateTime? CompletedDate { get; set; }
+
+    /// <summary>
+    /// Indicates if review was finished by timeout.
+    /// </summary>
+    public bool? IsFinishedByTimeout { get; set; }
 }
