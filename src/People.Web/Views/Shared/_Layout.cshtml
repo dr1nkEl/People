@@ -24,9 +24,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="User" asp-action="List">Домашняя</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Administration" asp-action="Attributes">Администрирование</a>
-                        </li>
+                        @if (User.Claims.Any(x => x.Value == "Management"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="Attributes">Администрирование</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 @if (User.Identity.IsAuthenticated)
@@ -41,6 +44,11 @@
                                     <li>
                                         <form method="post" asp-controller="User" asp-action="MyProfile">
                                             <input type="submit" value="Профиль" class="dropdown-item" />
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form method="post" asp-controller="User" asp-action="ChangePasswordRedirect">
+                                            <input type="submit" value="Сменить пароль" class="dropdown-item" />
                                         </form>
                                     </li>
                                     <li>
@@ -94,6 +102,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("Finished", "PR")">Завершенные оценки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("CreateUser", "Administration")">Добавить пользователя</a>
                 </li>
             }
         </ul>

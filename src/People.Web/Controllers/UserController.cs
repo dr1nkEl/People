@@ -3,6 +3,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using People.Domain.Users.Entities;
 using People.Infrastructure.Abstractions.Interfaces;
 using People.UseCases.Administration.GetRolesWithPermissions;
 using People.UseCases.Branches;
@@ -12,6 +13,7 @@ using People.UseCases.Positions.Queries.GetPositions;
 using People.UseCases.Reviews.GetPendingReviews;
 using People.UseCases.Users.AddReportingUsers;
 using People.UseCases.Users.AddUserToPosition;
+using People.UseCases.Users.ChangePasswordCommand;
 using People.UseCases.Users.ChangeUserRole;
 using People.UseCases.Users.GetUserInfo;
 using People.UseCases.Users.GetUsersShortInfo;
@@ -146,6 +148,36 @@ public class UserController : Controller
         return RedirectToAction("Info", new
         {
             userId = changeUserRoleCommand.UserId
+        });
+    }
+
+    /// <summary>
+    /// GET change password view.
+    /// </summary>
+    [HttpGet]
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
+
+    /// <summary>
+    /// Method to redirect for change password page.
+    /// </summary>
+    [HttpPost]
+    public IActionResult ChangePasswordRedirect() => RedirectToAction("ChangePassword");
+
+    /// <summary>
+    /// Changes password of user.
+    /// </summary>
+    /// <param name="model"><see cref="ChangePasswordViewModel"/>.</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new ChangePasswordCommand(loggedUserAccessor.GetCurrentUserId(), model.OldPassword, model.NewPassword), cancellationToken);
+        return RedirectToAction("Info", new
+        {
+            userId = loggedUserAccessor.GetCurrentUserId(),
         });
     }
 }

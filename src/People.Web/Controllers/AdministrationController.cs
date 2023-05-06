@@ -2,14 +2,18 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using People.Domain.Users.Entities;
 using People.UseCases.Administration.Attributes.GetUserAttributes;
 using People.UseCases.Administration.GetRolesWithPermissions;
 using People.UseCases.Administration.UpdatePermissionsForRole;
+using People.UseCases.Branches;
 using People.UseCases.Common.Identity;
 using People.UseCases.PR.GetTemplates;
+using People.UseCases.Users.CreateUser;
 using People.Web.ViewModels;
 using People.Web.ViewModels.Attribute;
 using People.Web.ViewModels.PR;
+using People.Web.ViewModels.User;
 
 namespace People.Web.Controllers;
 
@@ -90,5 +94,32 @@ public class AdministrationController : Controller
     public async Task UpdateClaimsForRoles(UpdatePermissionsForRoleCommand command, CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
+    }
+
+    /// <summary>
+    /// GET page of user creation.
+    /// </summary>
+    [HttpGet("[action]")]
+    public async Task<IActionResult> CreateUser(CancellationToken cancellationToken)
+    {
+        var branches = await mediator.Send(new GetAllBranchesQuery(), cancellationToken);
+
+        var model = new CreateUserViewModel
+        {
+            Branches = mapper.Map<IEnumerable<Branch>>(branches),
+        };
+        return View(model);
+    }
+
+    /// <summary>
+    /// POST create new user.
+    /// </summary>
+    /// <param name="model"><see cref="CreateUserViewModel"/>.</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+    [HttpPost("[action]")]
+    public async Task<IActionResult> CreateUser(CreateUserViewModel model, CancellationToken cancellationToken)
+    {
+        var id = await mediator.Send(new CreateUserCommand(model.Email, model.FirstName, model.LastName, DateOnly.FromDateTime(model.BirthDate), model.Password, model.BranchId), cancellationToken);
+        return RedirectToAction("Info", "User", new { userId = id });
     }
 }
