@@ -1,3 +1,4 @@
+using System.Data;
 using System.Security.Claims;
 using AutoMapper;
 using MediatR;
@@ -43,13 +44,6 @@ internal class LoginUserCommandHandler : AsyncRequestHandler<LoginUserCommand>
     /// <inheritdoc />
     protected override async Task Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        const string errorLoginMessage = "Email or password is incorrect.";
-
-        if (!string.IsNullOrEmpty(localAuthorizationSettings.Password) && localAuthorizationSettings.Password != request.Password)
-        {
-            throw new DomainException(errorLoginMessage);
-        }
-
         // Get user and log.
         var user = await signInManager.UserManager.FindByEmailAsync(request.Email);
 
@@ -58,13 +52,23 @@ internal class LoginUserCommandHandler : AsyncRequestHandler<LoginUserCommand>
             throw new NotFoundException("User with the entered data was not found.");
         }
 
-        logger.LogInformation("User with email {email} has logged in.", user.Email);
+        if (!string.IsNullOrEmpty(localAuthorizationSettings.Password) && localAuthorizationSettings.Password == request.Password)
+        {
+            logger.LogInformation("User with email {email} has logged in.", user.Email);
+            // Set cookie.
+            await signInManager.SignInAsync(user, request.RememberMe);
+            return;
+        }
+
+        var signInResult = await signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, false);
+
+        if (!signInResult.Succeeded)
+        {
+            throw new DomainException("Check password");
+        }
 
         // Update last login date.
         user.LastLogin = DateTime.UtcNow;
         await signInManager.UserManager.UpdateAsync(user);
-
-        // Set cookie.
-        await signInManager.SignInAsync(user, request.RememberMe);
     }
 }
