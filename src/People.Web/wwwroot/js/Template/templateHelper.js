@@ -76,7 +76,7 @@ function addQuestionInput(parentId, className, data) {
     const optionBlockId = 'optionBlock'+counter;
 
     $('#' + parentId).append('<div style="margin: 1% auto;" class="row mx-auto p-2 border border-primary border-3 rounded d-grid gap-3 ' + className + '" id="' + id + '">' +
-        '<label class="row mx-auto ">Question</label>' +
+        '<label class="row mx-auto ">Вопрос</label>' +
         '<input class="form-control col questionTitle questionTitle'+counter+'" placeholder = "Содержание вопроса" " required/>' +
         '<div class="row mx-auto">'+
         '<label class="col" for="answerTypeSelector' + counter + '">Тип вопроса</label>' +

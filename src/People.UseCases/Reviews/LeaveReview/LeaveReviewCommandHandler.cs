@@ -30,6 +30,7 @@ internal class LeaveReviewCommandHandler : AsyncRequestHandler<LeaveReviewComman
 
         var pr = await appDbContext.PerformanceReviews
             .Include(x=>x.Feedback)
+            .Include(x=>x.FeedbackUsers)
             .Include(x=>x.ReviewedUserReply)
             .FirstAsync(x => x.Id == request.PrId, cancellationToken);
 
@@ -49,7 +50,7 @@ internal class LeaveReviewCommandHandler : AsyncRequestHandler<LeaveReviewComman
             pr.Feedback.Add(request.UserReply);
         }
 
-        if (pr.ReviewedUserReplyId != null && pr.FeedbackUsers.Count == pr.Feedback.Count)
+        if (pr.ReviewedUserReply != null && pr.FeedbackUsers.Count == pr.Feedback.Count)
         {
             pr.CompletedDate = DateTime.UtcNow;
             pr.IsFinishedByTimeout = false;
