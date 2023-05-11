@@ -17,7 +17,7 @@ public class AdminMappingProfile : Profile
     public AdminMappingProfile()
     {
         CreateMap<AppIdentityRole, RoleDto>().ReverseMap();
-        CreateMap<UserAttribute, UserAttributeDto>();
+        CreateMap<UserAttribute, UserAttributeDto>().ReverseMap();
         CreateMap<UserAttribute, DetailedUserAttributeDto>();
         CreateMap<AttributeOption, UserAttributeDto>();
         CreateMap<AttributeOption, AttributeOptionDto>();

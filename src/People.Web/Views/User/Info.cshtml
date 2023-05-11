@@ -5,6 +5,8 @@
 @{
     ViewData["Title"] = $"User {Model.User.FullName}";
     var stringBirthday = Model.User.BirthDay == DateOnly.MinValue ? "N/A" : Model.User.BirthDay.ToString();
+    var idsOfAllRoles = Model.AllRoles.Select(x => x.Id).ToList();
+    var idsOfUserRoles = Model.RolesOfUser.Select(x => x.Id).ToList();
 }
 
 @section Styles{
@@ -188,7 +190,90 @@
             </table>
         </div>
     </div>
+
+    <div class="row p-4 bg-light border">
+        <div class="col-md-2 w-50 container">
+            <p>Атрибуты пользователя</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#attributeSetModal">
+                Установить атрибуты пользователя
+            </button>
+            <div class="row">
+                @foreach (var atr in Model.AttributesOfUser)
+                {
+                    var atrValue = atr.Values.First(x => x.UserId == Model.User.Id);
+
+                    @if (atr.AllowViewRoles.Select(x=>x.Id).Intersect(idsOfUserRoles).Any() || atr.AllowViewSelf)
+                    {
+                        <label for="atr[@atr.Id]">@atr.Name</label>
+                        if (atr.AttributeType == AttributeType.Text)
+                        {
+                            <input value="@atrValue.Value" disabled type="text"/>
+                        }
+                        else if (atr.AttributeType == AttributeType.Number)
+                        {
+                            <input value="@atrValue.Value" type="number"/>
+                        }
+                        else if (atr.AttributeType == AttributeType.DropDown)
+                        {
+                            <select disabled>
+                                @foreach (var option in atr.AttributeOptions)
+                                {
+                                    if (option.Id.ToString() == atrValue.Value)
+                                    {
+                                        <option value="@option.Id" selected>@option.Title</option>
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace(atrValue.Value))
+                                    {
+                                        <option value="@option.Id">@option.Title</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="">Не задано значение</option>
+                                    }
+                                }
+                            </select>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<!-- Modal Set Attributes -->
+<div class="modal fade" id="attributeSetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Атрибуты пользователя</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="modal-body" asp-action="SetAttributesForUser" asp-controller="User">
+                <select multiple asp-for="AttributeIdsToSet">
+                    @foreach (var atr in Model.AllAttributes)
+                    {
+                        if (Model.AttributesOfUser.Any(x=>x.Id == atr.Id))
+                        {
+                            <option value="@atr.Id" selected>@atr.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@atr.Id">@atr.Name</option>
+                        }
+                    }
+                </select>
+                <input hidden value="@Model.User.Id" asp-for="User.Id"/>
+                <button class="btn btn-primary">Сохранить</button>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts
 {

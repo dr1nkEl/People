@@ -29,4 +29,8 @@
     <EmbeddedResource Include="**\*.html" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attributes\SetAttributeToUser\" />
+  </ItemGroup>
+
 </Project>

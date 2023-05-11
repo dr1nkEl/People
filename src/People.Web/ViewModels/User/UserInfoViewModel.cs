@@ -1,4 +1,5 @@
 ﻿using People.Domain.Reviews.Entities;
+using People.Domain.Users.Entities;
 using People.UseCases.Common.Dtos.Administration;
 using People.UseCases.Common.Dtos.Branch;
 using People.UseCases.Common.Dtos.Position;
@@ -37,4 +38,24 @@ public record UserInfoViewModel
     /// All roles.
     /// </summary>
     public IEnumerable<RoleDto> AllRoles { get; init; }
+
+    /// <summary>
+    /// Roles with permissions of current user.
+    /// </summary>
+    public IEnumerable<AppIdentityRole> RolesOfUser { get; init; }
+
+    /// <summary>
+    /// Attributes of user whom page belongs to.
+    /// </summary>
+    public IEnumerable<UserAttribute> AttributesOfUser { get; init; }
+
+    /// <summary>
+    /// All attributes in system.
+    /// </summary>
+    public IEnumerable<UserAttribute> AllAttributes { get; init; }
+
+    /// <summary>
+    /// Attributes from modal to set to user.
+    /// </summary>
+    public IEnumerable<int> AttributeIdsToSet { get; init; }
 }

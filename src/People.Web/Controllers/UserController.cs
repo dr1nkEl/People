@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using People.Domain.Users.Entities;
 using People.Infrastructure.Abstractions.Interfaces;
+using People.UseCases.Administration.Attributes.GetUserAttributes;
+using People.UseCases.Administration.GetRolesOfUser;
 using People.UseCases.Administration.GetRolesWithPermissions;
+using People.UseCases.Attributes.GetUserAttributes;
 using People.UseCases.Branches;
 using People.UseCases.Branches.GetBranchNameById;
 using People.UseCases.Common.Identity;
@@ -17,6 +20,7 @@ using People.UseCases.Users.ChangePasswordCommand;
 using People.UseCases.Users.ChangeUserRole;
 using People.UseCases.Users.GetUserInfo;
 using People.UseCases.Users.GetUsersShortInfo;
+using People.UseCases.Users.SetActiveAttributes;
 using People.Web.ViewModels;
 using People.Web.ViewModels.User;
 
@@ -72,6 +76,10 @@ public class UserController : Controller
         var allRoles = await mediator.Send(new GetRolesAndClaimsQuery(), cancellationToken);
         var pendingReviews = await mediator.Send(new GetPendingReviewsQuery(userId), cancellationToken);
 
+        var attributes = await mediator.Send(new GetUserAttributesByIdQuery(userId), cancellationToken);
+        var userRoles = await mediator.Send(new GetRolesOfUserQuery(loggedUserAccessor.GetCurrentUserId()), cancellationToken);
+        var allAttributes = mapper.Map<IEnumerable<UserAttribute>>(await mediator.Send(new GetUserAttributesQuery(false), cancellationToken));
+
         var viewModel = new UserInfoViewModel()
         {
             User = user,
@@ -79,6 +87,9 @@ public class UserController : Controller
             AllRoles = allRoles,
             UserReviews = pendingReviews.UserReviews,
             ReviewsForUser = pendingReviews.ReviewsForUser,
+            AttributesOfUser = attributes,
+            RolesOfUser = userRoles,
+            AllAttributes = allAttributes,
         };
 
         if (loggedUserAccessor.HasClaim(CustomClaimTypes.Permission, Permissions.Management))
@@ -178,6 +189,21 @@ public class UserController : Controller
         return RedirectToAction("Info", new
         {
             userId = loggedUserAccessor.GetCurrentUserId(),
+        });
+    }
+
+    /// <summary>
+    /// Sets active attributes for user.
+    /// </summary>
+    /// <param name="model"><see cref="UserInfoViewModel"/>.</param>
+    [HttpPost]
+    public async Task<IActionResult> SetAttributesForUser(UserInfoViewModel model)
+    {
+        await mediator.Send(new SetActiveAttributesCommand(model.User.Id, model.AttributeIdsToSet));
+
+        return RedirectToAction("Info", new
+        {
+            userId = model.User.Id,
         });
     }
 }
