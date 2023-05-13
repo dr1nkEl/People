@@ -1,0 +1,33 @@
+﻿@model AttributeValue
+
+<p>Изменение атрибута '@Model.Attribute.Name' пользователя <a href="/User/Info?userId=@Model.User.Id">@Model.User.FullName</a></p>
+<form class="container" asp-action="AttributeValue" asp-controller="User" method="post">
+    <input hidden asp-for="UserId" value="@Model.UserId"/>
+    <label for="newValue">Новое значение</label>
+        @if (Model.Attribute.AttributeType == AttributeType.Text)
+        {
+            <input id="newValue" value="@Model.Value" type="text" asp-for="Value"/>
+        }
+        else if (Model.Attribute.AttributeType == AttributeType.Number)
+        {
+            <input value="@Model.Value" type="number" id="newValue" asp-for="Value" />
+        }
+        else if (Model.Attribute.AttributeType == AttributeType.DropDown)
+        {
+            <select id="newValue" asp-for="Value">
+                <option value="">Не задано значение</option>
+                @foreach (var option in Model.Attribute.AttributeOptions)
+                {
+                    if (option.Id.ToString() == Model.Value)
+                    {
+                        <option value="@option.Id" selected>@option.Title</option>
+                    }
+                    else
+                    {
+                        <option value="@option.Id">@option.Title</option>
+                    }
+                }
+            </select>
+        }
+        <button class="btn btn-primary">Сохранить</button>
+</form>

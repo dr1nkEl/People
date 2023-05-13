@@ -197,8 +197,8 @@
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#attributeSetModal">
                 Установить атрибуты пользователя
             </button>
-            <div class="row">
-                @foreach (var atr in Model.AttributesOfUser)
+            <div class="col border border-primary">
+                @foreach (var atr in Model.AttributesOfUser.OrderBy(x=>x.Name))
                 {
                     var atrValue = atr.Values.First(x => x.UserId == Model.User.Id);
 
@@ -211,28 +211,30 @@
                         }
                         else if (atr.AttributeType == AttributeType.Number)
                         {
-                            <input value="@atrValue.Value" type="number"/>
+                            <input value="@atrValue.Value" type="number" disabled/>
                         }
                         else if (atr.AttributeType == AttributeType.DropDown)
                         {
                             <select disabled>
+                                <option value="">Не задано значение</option>
                                 @foreach (var option in atr.AttributeOptions)
                                 {
                                     if (option.Id.ToString() == atrValue.Value)
                                     {
                                         <option value="@option.Id" selected>@option.Title</option>
                                     }
-                                    else if (!string.IsNullOrWhiteSpace(atrValue.Value))
-                                    {
-                                        <option value="@option.Id">@option.Title</option>
-                                    }
                                     else
                                     {
-                                        <option value="">Не задано значение</option>
+                                        <option value="@option.Id">@option.Title</option>
                                     }
                                 }
                             </select>
                         }
+                    }
+
+                    @if (atr.AllowEditRoles.Select(x => x.Id).Intersect(idsOfUserRoles).Any() || atr.AllowEditSelf)
+                    {
+                        <a href="@Url.Action("AttributeValue", "User", new{valueId = atrValue.Id})">Изменить</a>
                     }
                 }
             </div>

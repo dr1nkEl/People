@@ -9,6 +9,7 @@ using People.UseCases.Administration.Attributes.GetUserAttributes;
 using People.UseCases.Administration.GetRolesOfUser;
 using People.UseCases.Administration.GetRolesWithPermissions;
 using People.UseCases.Attributes.GetUserAttributes;
+using People.UseCases.Attributes.GetValueById;
 using People.UseCases.Branches;
 using People.UseCases.Branches.GetBranchNameById;
 using People.UseCases.Common.Identity;
@@ -21,6 +22,7 @@ using People.UseCases.Users.ChangeUserRole;
 using People.UseCases.Users.GetUserInfo;
 using People.UseCases.Users.GetUsersShortInfo;
 using People.UseCases.Users.SetActiveAttributes;
+using People.UseCases.Users.SetValueOfAttribute;
 using People.Web.ViewModels;
 using People.Web.ViewModels.User;
 
@@ -205,5 +207,30 @@ public class UserController : Controller
         {
             userId = model.User.Id,
         });
+    }
+
+    /// <summary>
+    /// GET edit attribute value page.
+    /// </summary>
+    /// <param name="valueId">Id of value.</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+    [HttpGet("[controller]/[action]/{valueId}")]
+    public async Task<IActionResult> AttributeValue(int valueId, CancellationToken cancellationToken)
+    {
+        var value = await mediator.Send(new GetValueByIdQuery(valueId), cancellationToken);
+        return View(value);
+    }
+
+    /// <summary>
+    /// Edit value of attribute value.
+    /// </summary>
+    /// <param name="atrValue"><see cref="Domain.Users.Entities.AttributeValue"/>.</param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+    /// <returns></returns>
+    [HttpPost("[controller]/[action]/{Id}")]
+    public async Task<IActionResult> AttributeValue(AttributeValue atrValue, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new SetValueOfAttributeCommand(atrValue.Id, atrValue.Value), cancellationToken);
+        return RedirectToAction("Info", new { userId = atrValue.UserId });
     }
 }
