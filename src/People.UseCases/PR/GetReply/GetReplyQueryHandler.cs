@@ -27,6 +27,7 @@ internal class GetReplyQueryHandler : IRequestHandler<GetReplyQuery, Reply>
         var pr = await appDbContext.PerformanceReviews
             .Include(x=>x.ReviewedUserReply)
             .ThenInclude(x=>x.Answers)
+            .ThenInclude(x=>x.Question)
             .Include(x=>x.Feedback)
             .ThenInclude(x=>x.Answers)
             .ThenInclude(x=>x.Question)

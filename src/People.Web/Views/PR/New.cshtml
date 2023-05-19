@@ -1,7 +1,7 @@
 ﻿@model TemplateOptionsViewModel
 
 <div>
-    <label>Template</label>
+    <label>Шаблон</label>
     <select class="form-select" id="templateSelector">
         <option value="">None</option>
         @foreach (var template in Model.Templates)
@@ -41,12 +41,12 @@
 
     <div id="reviewedQuestionBlock" class="mx-auto h4 p-2">
         <label>Вопросы назначенному</label>
-        <button class="btn btn-success" type="button" onclick="addQuestionInput('reviewedQuestionBlock', 'reviewedQuestion', null)">Add question</button>
+        <button class="btn btn-success" type="button" onclick="addQuestionInput('reviewedQuestionBlock', 'reviewedQuestion', null)">Добавить вопрос</button>
     </div>
 
     <div id="feedbackQuestionBlock" class="mx-auto h4 p-2">
         <label>Вопросы ревьюверам</label>
-        <button class="btn btn-success" type="button" onclick="addQuestionInput('feedbackQuestionBlock', 'feedbackQuestion', null)">Add question</button>
+        <button class="btn btn-success" type="button" onclick="addQuestionInput('feedbackQuestionBlock', 'feedbackQuestion', null)">Добавить вопрос</button>
     </div>
 
     <button id="createButton" type="button" class="btn btn-success p-2">Создать</button>
